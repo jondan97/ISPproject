@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<div th:switch="${role}">
+    <div th:case="'admin'">
+        <p>User has logged in and is an admin.</p>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h1><a th:href="@{/admin}">admin</a> | <a th:href="@{/user}">user</a></h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+    <div th:case="'user'">
+        <p>User has logged in.</p>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h1> <a th:href="@{/user}">user</a> </h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+    <div th:case='*'>
+        <p>User has not logged in.</p>
+        <h1 th:inline="text">Hello anonymous user!</h1>
+        <h1><a th:href="@{/login}">login</a></h1>
+    </div>
+    <h1> <a th:href="@{/postAd}">Post an Advert</a> </h1>
+</div>
+<table>
+    <tr th:if="${advertArray.isEmpty()}">
+        <td colspan="2"> No Adverts Available </td>
+    </tr>
+<tr th:each="advert : ${advertArray}">
+    <td><span th:text="${advert.getId()}">Id</span></td>
+    <td><span th:text="${advert.getTitle()}">Title</span></td>
+    <td><span th:text="${advert.getBody()}">Body</span></td>
+    <td><span th:text="${advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'">Industry</span></td>
+    <td><span th:text="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'">Salary</span></td>
+
+</tr>
+</table>
+</body>
+</html>
