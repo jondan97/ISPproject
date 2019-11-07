@@ -33,13 +33,22 @@
     <tr th:if="${advertArray.isEmpty()}">
         <td colspan="2"> No Adverts Available </td>
     </tr>
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+        <td>Body</td>
+        <td>Industry</td>
+        <td>Salary</td>
+    </tr>
 <tr th:each="advert : ${advertArray}">
-    <td><span th:text="${advert.getId()}">Id</span></td>
-    <td><span th:text="${advert.getTitle()}">Title</span></td>
-    <td><span th:text="${advert.getBody()}">Body</span></td>
-    <td><span th:text="${advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'">Industry</span></td>
-    <td><span th:text="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'">Salary</span></td>
-
+    <form th:action="@{/postEditing}" method="post">
+    <td><input type="text" name="id" th:value="${advert.getId()}"></input></td>
+    <td><input type="text" name="title" th:value="${advert.getTitle()}"></input></td>
+    <td><input type="text" name="body" th:value="${advert.getBody()}"></input></td>
+    <td><input type="text" name="industry" th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></input></td>
+    <td><input type="text" name="salary" th:value="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'"></input></td>
+        <td><input type="submit" value="Submit"></td>
+    </form>
 </tr>
 </table>
 </body>
