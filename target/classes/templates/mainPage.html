@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1> <a th:href="@{/}">Home</a> </h1>
+<div th:switch="${role}">
+    <div th:case="'admin'">
+        <p>User has logged in and is an admin.</p>
+        <h1 th:text="'Hello ' + ${companyName}"></h1>
+        <h1><a th:href="@{/admin}">admin</a> | <a th:href="@{/user/myAdverts}">My Adverts</a></h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+    <div th:case="'user'">
+        <p>User has logged in.</p>
+        <h1 th:text="'Hello ' + ${companyName}"></h1>
+        <h1> <a th:href="@{/user/myAdverts}">My Adverts</a> </h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+    <div th:case='*'>
+        <p>User has not logged in.</p>
+        <h1 th:inline="text">Hello anonymous user!</h1>
+        <h1><a th:href="@{/login}">login</a></h1>
+    </div>
+</div>
+<table>
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+        <td>Body</td>
+        <td>Company</td>
+        <td>Industry</td>
+        <td>Salary</td>
+    </tr>
+    <tr th:if="${advertArray.isEmpty()}">
+        <td colspan="2"> No Adverts Available </td>
+    </tr>
+<tr th:each="advert : ${advertArray}">
+    <form th:action="@{'/view/' + ${advert.getId()}}" method="post">
+    <td><input type="text" name="id" disabled th:value="${advert.getId()}"></input></td>
+    <td><input type="text" name="title" disabled th:value="${advert.getTitle()}"></input></td>
+    <td><input type="text" name="body" disabled th:value="${advert.getBody()}"></input></td>
+    <td><input type="text" name="companyName" disabled th:value="${advert.getUser().getCompanyName()}"></input></td>
+    <td><input type="text" name="industry" disabled th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></input></td>
+    <td><input type="text" name="salary" disabled th:value="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'"></input></td>
+        <td><input type="submit" name="action" value="View"></td>
+    </form>
+</tr>
+</table>
+</body>
+</html>

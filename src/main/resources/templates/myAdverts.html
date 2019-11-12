@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1> <a th:href="@{/}">Home</a> </h1>
+<h1> <a th:href="@{/user/postAd}">Post an Advert</a> </h1>
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Body</td>
+        <td>Industry</td>
+        <td>Salary</td>
+        <td>Time Posted</td>
+        <td>Status</td>
+    </tr>
+    <tr th:if="${advertArray.isEmpty()}">
+        <td colspan="2">No Adverts Posted</td>
+    </tr>
+    <tr th:each="advert : ${advertArray}">
+        <form th:action="@{/user/postEditing}" method="post">
+            <td><input type="text" name="title" th:value="${advert.getTitle()}"></td>
+            <td><input type="text" name="body" th:value="${advert.getBody()}"></td>
+            <td><input type="text" name="industry" th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></td>
+            <td><input type="text" name="salary" th:value="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'"></td>
+            <td><input type="text" name="timePostedStr" th:value="${advert.getTimePosted()}"></td>
+            <td th:switch="${advert.getStatus()}">
+                <select  th:case="'Visible'"name="status">
+                    <option value="Visible" selected>Visible</option>
+                    <option value="Invisible">Invisible</option>
+                </select>
+                <select  th:case="'Invisible'"name="status">
+                    <option value="Visible">Visible</option>
+                    <option value="Invisible" selected>Invisible</option>
+                </select>
+                <select  th:case="'Draft'"name="status">
+                    <option value="Visible">Post</option>
+                    <option value="Draft" selected>Draft</option>
+                </select>
+            </td>
+            <td><input type="hidden" name="id" th:value="${advert.getId()}"></td>
+            <td><input type="hidden" name="userId" th:value="${advert.getUser().getId()}"></td>
+            <td><input type="submit" name="action" value="Update"></td>
+            <td><input type="submit" name="action" value="Delete"></td>
+        </form>
+    </tr>
+</table>
+</body>
+</html>
