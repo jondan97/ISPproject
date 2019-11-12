@@ -1,1 +1,31 @@
-<h1>admin Yeah</h1>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1> <a th:href="@{/}">Home</a> </h1>
+<form th:action="@{/admin/userAdding}" method="post">
+    E-mail: <input type="text" name="email" th:value="${email}"><br>
+    <div th:if="${emailError}">
+        E-mail must not be empty.
+    </div>
+    Password: <input type="password" name="password" th:value="${password}"><br>
+    <div th:if="${passwordError}">
+        Password must not be empty.
+    </div>
+    Password Confirmation: <input type="password" name="passwordConfirmation" th:value="${passwordConfirmation}"><br>
+    <div th:if="${passwordConfirmationError}">
+        Password Confirmation must not be empty.
+    </div>
+    <div th:if="${passwordMismatch}">
+        Passwords must match.
+    </div>
+    Company Name: <input type="text" name="companyName" th:value="${companyName}"><br>
+    <div th:if="${companyNameError}">
+        Company must not be empty.
+    </div>
+    <input type="submit" value="Submit">
+</form>
+</body>

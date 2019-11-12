@@ -25,18 +25,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                 .antMatchers(resources).permitAll()
-                .antMatchers("/menu").permitAll()
-                .antMatchers("/","/index").permitAll()
+                .antMatchers("/","/login","/view/*").permitAll()
                 .antMatchers("/admin*").access("hasRole('ADMIN')")
-                .antMatchers("/user*", "/postAd").access("hasRole('USER') or hasRole('ADMIN')")
+                .antMatchers("/user*").access("hasRole('USER') or hasRole('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/menu")
+                .defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
-                .usernameParameter("username")
+                .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
                 .logout()
@@ -44,26 +43,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutSuccessUrl("/login?logout");
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
-    //Crea el encriptador de contraseñas
+    //This is the password encoder with strength 4
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
-//El numero 4 representa que tan fuerte quieres la encriptacion.
-//Se puede en un rango entre 4 y 31.
-//Si no pones un numero el programa utilizara uno aleatoriamente cada vez
-//que inicies la aplicacion, por lo cual tus contrasenas encriptadas no funcionaran bien
         return bCryptPasswordEncoder;
     }
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    //Registra el service para usuarios y el encriptador de contrasena
+    //Register the service for users and the password encryptor
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
+        // Setting service to find user in the database and setting password encoder
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }

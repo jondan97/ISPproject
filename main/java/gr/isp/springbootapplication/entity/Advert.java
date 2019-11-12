@@ -1,13 +1,15 @@
 package gr.isp.springbootapplication.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Advert {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column
     private String title;
@@ -21,11 +23,21 @@ public class Advert {
     @Column
     private String industry;
 
-    public Integer getId() {
+    @Column
+    private String status;
+
+    @Column
+    private LocalDateTime timePosted;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,5 +71,43 @@ public class Advert {
 
     public void setIndustry(String industry) {
         this.industry = industry;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getTimePosted() {
+        return timePosted;
+    }
+
+    public void setTimePosted(LocalDateTime timePosted) {
+        this.timePosted = timePosted;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Advert advert = (Advert) o;
+        return Objects.equals(id, advert.id) &&
+                Objects.equals(title, advert.title) &&
+                Objects.equals(body, advert.body) &&
+                Objects.equals(salary, advert.salary) &&
+                Objects.equals(industry, advert.industry) &&
+                Objects.equals(status, advert.status) &&
+                Objects.equals(user, advert.user);
     }
 }
