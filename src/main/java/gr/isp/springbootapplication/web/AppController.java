@@ -57,7 +57,7 @@ public class AppController {
         return "mainPage";
     }
 
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/view/{id}", method=RequestMethod.GET)
     public String viewAdvertGet(Model model,
                              @PathVariable String id
     ) {
