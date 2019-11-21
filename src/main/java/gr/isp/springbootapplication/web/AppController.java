@@ -70,26 +70,6 @@ public class AppController {
             return "viewAdvert";
     }
 
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.POST)
-    public String viewAdvertPost(Model model,
-                             @RequestParam String action,
-                             @PathVariable String id
-    ) {
-        if (action.equals("View")){
-            long idLong = 0;
-            if (!(id.isEmpty())) {
-                idLong = Long.parseLong(id);
-            }
-            Advert advert = advertRepository.findFirstById(idLong);
-            model.addAttribute("advert", advert);
-            return "viewAdvert";
-
-        }
-        else {
-            return "mainPage";
-        }
-    }
-
     //roles: user, admin and visitor (has not signed in)
     private String findRole(HttpServletRequest request){
         String role = "";
