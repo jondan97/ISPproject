@@ -22,7 +22,7 @@
         Body must not be empty.
     </div>
     Industry: <input type="text" name="industry" th:value="${industry}"><br>
-    Salary: <input type="text" name="salary" th:value="${salary}"><br>
+    Salary: <input type="number" name="salary" th:value="${salary}"><br>
     <div th:if="${salaryError}">
         Salary must be a number.
     </div>

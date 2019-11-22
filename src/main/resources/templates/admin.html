@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hello World!</title>
     <meta charset="utf-8">
@@ -14,7 +13,7 @@
 <div th:replace="/navigation :: navbar"></div>
 
 <form th:action="@{/admin/userAdding}" method="post">
-    E-mail: <input type="text" name="email" th:value="${email}"><br>
+    E-mail: <input type="email" name="email" th:value="${email}"><br>
     <div th:if="${emailError}">
         E-mail must not be empty.
     </div>

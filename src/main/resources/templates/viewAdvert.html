@@ -27,7 +27,7 @@
         <td><span th:text="${advert.getSalary()}"></span></td>
         <td><span th:text="${advert.getTimePosted()}"></span></td>
     <tr>
-        <form th:action="@{/}" method="get">
+        <form th:action="@{'/view/' + ${advert.getId()} + '/apply'}" method="post">
             <input type="text" name="id" hidden th:value="${advert.getId()}">
             <td><input type="submit" name="action" value="Apply for Job"></td>
         </form>
