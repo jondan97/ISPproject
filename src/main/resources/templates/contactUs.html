@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+</head>
+<body>
+<form th:action="@{/contactUs/contactingUs}" method="post">
+    E-mail: <input type="email" name="email" th:value="${email}"/><br>
+    <div th:if="${emailError}">
+        E-mail must not be empty.
+    </div>
+    Phone Number: <input type="number" name="phone" th:value="${phone}"/><br>
+    <div th:if="${phoneError}">
+        Phone Number must not be empty.
+    </div>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
