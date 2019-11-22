@@ -9,7 +9,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1> <a th:href="@{/}">Home</a> </h1>
+
+    <div th:replace="/navigation :: navbar"></div>
+
                 <p></p>
                 <form th:action="@{/login}" method="post">
                         <input type="text" placeholder="Email" name="email" th:value="${email}? ${email}"/>

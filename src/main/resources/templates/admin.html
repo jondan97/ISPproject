@@ -10,7 +10,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1> <a th:href="@{/static}">Home</a> </h1>
+
+<div th:replace="/navigation :: navbar"></div>
+
 <form th:action="@{/admin/userAdding}" method="post">
     E-mail: <input type="text" name="email" th:value="${email}"><br>
     <div th:if="${emailError}">
