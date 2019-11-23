@@ -44,6 +44,7 @@
             <td>Title</td>
             <td>Company</td>
             <td>Industry</td>
+            <td>Days Posted</td>
         </tr>
     </thead>
     <tbody>
@@ -62,6 +63,10 @@
             <td>
                 <a th:href="@{'/view/' + ${advert.getId()}}"
                    th:text="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></a>
+            </td>
+            <td>
+                <a th:href="@{'/view/' + ${advert.getId()}}"
+                   th:text="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"></a>
             </td>
         </tr>
     </tbody>

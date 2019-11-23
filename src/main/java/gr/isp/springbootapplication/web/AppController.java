@@ -1,15 +1,11 @@
 package gr.isp.springbootapplication.web;
 
 import gr.isp.springbootapplication.entity.Advert;
-import gr.isp.springbootapplication.entity.SessionUser;
 import gr.isp.springbootapplication.repository.AdvertRepository;
 import gr.isp.springbootapplication.service.EmailService;
+import gr.isp.springbootapplication.service.SessionUserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,18 +46,26 @@ public class AppController {
     }
 
     @GetMapping({"/"})
-    public String mainPage(Model model, Authentication auth, HttpServletRequest request) {
-        SessionUser user = getSessionUser();
-        String role = findRole(request);
-        if(user != null){
-            String companyName = user.getCompanyName();
-            model.addAttribute("companyName", companyName);
-        }
-        model.addAttribute("role",role);
+    public String mainPage(Model model) {
+        SessionUserService.determineUser(model);
+
+
         Iterable<Advert> adverts = advertRepository.findByStatus("Visible");
         List<Advert> advertArray = new ArrayList<Advert>();
         for (Advert ad: adverts) {
-            advertArray.add(ad);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime nowTooLong = LocalDateTime.now();
+            String nowStr = nowTooLong.format(formatter);
+            LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
+            Long daysPosted = Duration.between(ad.getTimePosted(), now).toDays();
+            if(daysPosted >= 30){
+                ad.setStatus("Expired");
+                advertRepository.save(ad);
+            }
+            else {
+                ad.setDaysPosted(daysPosted);
+                advertArray.add(ad);
+            }
         }
         model.addAttribute("advertArray",advertArray);
 
@@ -70,39 +76,87 @@ public class AppController {
     public String viewAdvert(Model model,
                              @PathVariable String id
     ) {
-            long idLong = 0;
+        SessionUserService.determineUser(model);
+        boolean idError = false;
+        long idLong = 0;
+        try {
             if (!(id.isEmpty())) {
                 idLong = Long.parseLong(id);
             }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
+        }
+        if (idError) {
+            return "error";
+        }
+        else {
             Advert advert = advertRepository.findFirstById(idLong);
-            model.addAttribute("advert", advert);
-            return "viewAdvert";
+            if (advert == null){
+                return "error";
+            }
+            else {
+                model.addAttribute("advert", advert);
+                return "viewAdvert";
+            }
+        }
     }
 
     @RequestMapping(value="/view/{id}/apply", method=RequestMethod.POST)
     public String applyForAdvertPost(Model model,
                                 @PathVariable String id
     ) {
+        SessionUserService.determineUser(model);
+        boolean idError = false;
         long idLong = 0;
-        if (!(id.isEmpty())) {
-            idLong = Long.parseLong(id);
+        try {
+            if (!(id.isEmpty())) {
+                idLong = Long.parseLong(id);
+            }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
         }
-        Advert advert = advertRepository.findFirstById(idLong);
-        model.addAttribute("advert", advert);
-        return "applyForAdvert";
+        if (idError) {
+            return "error";
+        }
+        else {
+            Advert advert = advertRepository.findFirstById(idLong);
+            if (advert == null){
+                return "error";
+            }
+            else {
+                model.addAttribute("advert", advert);
+                return "applyForAdvert";
+            }
+        }
     }
 
     @RequestMapping(value="/view/{id}/apply", method=RequestMethod.GET)
     public String applyForAdvertGet(Model model,
                                  @PathVariable String id
     ) {
+        SessionUserService.determineUser(model);
+        boolean idError = false;
         long idLong = 0;
-        if (!(id.isEmpty())) {
-            idLong = Long.parseLong(id);
+        try {
+            if (!(id.isEmpty())) {
+                idLong = Long.parseLong(id);
+            }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
         }
-        Advert advert = advertRepository.findFirstById(idLong);
-        model.addAttribute("advert", advert);
-        return "applyForAdvert";
+        if (idError) {
+            return "error";
+        }
+        else {
+            Advert advert = advertRepository.findFirstById(idLong);
+            if (advert == null){
+                return "error";
+            }
+            else {
+                model.addAttribute("advert", advert);
+                return "applyForAdvert";
+            }
+        }
     }
 
     @PostMapping("/view/sendingApplication")
@@ -114,71 +168,74 @@ public class AppController {
                              @RequestParam String email,
                              @RequestParam MultipartFile cv) throws IOException, MessagingException {
 
-        boolean firstNameError;
-        boolean lastNameError;
-        boolean phoneError = false;
-        boolean emailError;
-        boolean cvError;
-
+        //basic ID security against attackers that insert IDs for adverts that don't exist or strings for IDs
+        boolean idError = false;
         long idLong = 0;
-        if (!(id.isEmpty())) {
-            idLong = Long.parseLong(id);
+        try {
+            if (!(id.isEmpty())) {
+                idLong = Long.parseLong(id);
+            }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
         }
-        Advert advertApplyingFor = advertRepository.findFirstById(idLong);
-
-        if (!(firstname.isEmpty() || lastname.isEmpty() || phone.isEmpty() || email.isEmpty() || !FilenameUtils.getExtension(cv.getOriginalFilename()).equals("pdf"))){
-            String emailSentTo = advertApplyingFor.getUser().getEmail();
-            String emailSubject = "Applicant Form";
-            String emailBody = "Application from a job seeker has been received!" +
-                    "<h2> Application Applying for: <a href='localhost:8080/view/" + advertApplyingFor.getId() + "'>" + advertApplyingFor.getTitle() + "</a></h2><br>" +
-                    "<h1> First Name: " + firstname + "</h1>" +
-                    "<h1> Last Name: " + lastname + "</h1>" +
-                    "<h1> Phone Number: " + phone + "</h1>" +
-                    "<h1> Contact E-mail: " + email + "</h1><br>" +
-                    "CV can be found attached to this e-mail"
-                    ;
-            emailService.sendEmailWithAttachement(emailSentTo, emailSubject, emailBody, cv);
-            return "redirect:/view/" + advertApplyingFor.getId();
+        if(idError){
+            return "error";
         }
-
         else {
-            if (firstname.isEmpty()){
-                firstNameError = true;
-                redir.addFlashAttribute("firstNameError", firstNameError);
-            }
-            if (lastname.isEmpty()){
-                lastNameError = true;
-                redir.addFlashAttribute("lastNameError", lastNameError);
-            }
+            Advert advertApplyingFor = advertRepository.findFirstById(idLong);
+            //could be a Long but still a random number (advert does not exist on the DB)
+            if (advertApplyingFor == null) {
+                return "error";
+            //business logic here
+            } else {
+                if (!(firstname.isEmpty() || lastname.isEmpty() || phone.isEmpty() || email.isEmpty() || !FilenameUtils.getExtension(cv.getOriginalFilename()).equals("pdf"))) {
+                    String emailSentTo = advertApplyingFor.getUser().getEmail();
+                    String emailSubject = "Applicant Form";
+                    String emailBody = "Application from a job seeker has been received!" +
+                            "<h2> Application Applying for: <a href='localhost:8080/view/" + advertApplyingFor.getId() + "'>" + advertApplyingFor.getTitle() + "</a></h2><br>" +
+                            "<h1> First Name: " + firstname + "</h1>" +
+                            "<h1> Last Name: " + lastname + "</h1>" +
+                            "<h1> Phone Number: " + phone + "</h1>" +
+                            "<h1> Contact E-mail: " + email + "</h1><br>" +
+                            "CV can be found attached to this e-mail";
+                    emailService.sendEmailWithAttachement(emailSentTo, emailSubject, emailBody, cv);
+                    return "redirect:/view/" + advertApplyingFor.getId();
+                } else {
+                    if (firstname.isEmpty()) {
+                        redir.addFlashAttribute("firstNameError", true);
+                    }
+                    if (lastname.isEmpty()) {
+                        redir.addFlashAttribute("lastNameError", true);
+                    }
 
-            if (email.isEmpty()){
-                emailError = true;
-                redir.addFlashAttribute("emailError", emailError);
-            }
+                    if (email.isEmpty()) {
+                        redir.addFlashAttribute("emailError", true);
+                    }
 
-            if(phone.isEmpty()){
-                phoneError = true;
-                redir.addFlashAttribute("phoneError", phoneError);
-            }
+                    if (phone.isEmpty()) {
+                        redir.addFlashAttribute("phoneError", true);
+                    }
 
-            if(!(FilenameUtils.getExtension(cv.getOriginalFilename()).equals("pdf"))){
-                cvError = true;
-                redir.addFlashAttribute("cvError", cvError);
-            }
+                    if (!(FilenameUtils.getExtension(cv.getOriginalFilename()).equals("pdf"))) {
+                        redir.addFlashAttribute("cvError", true);
+                    }
 
+                }
+                redir.addFlashAttribute("firstname", firstname);
+                redir.addFlashAttribute("lastname", lastname);
+                redir.addFlashAttribute("phone", phone);
+                redir.addFlashAttribute("email", email);
+                redir.addFlashAttribute("cv", cv);
+
+
+                return "redirect:/view/" + advertApplyingFor.getId() + "/apply";
+            }
         }
-        redir.addFlashAttribute("firstname", firstname);
-        redir.addFlashAttribute("lastname", lastname);
-        redir.addFlashAttribute("email", email);
-        redir.addFlashAttribute("cv", cv);
-
-        return "redirect:/view/" + advertApplyingFor.getId() + "/apply";
-
     }
 
 
     @GetMapping({"/contactUs"})
-    public String contactUs(Model model, Authentication auth, HttpServletRequest request) {
+    public String contactUs() {
         return "contactUs";
     }
 
@@ -187,9 +244,6 @@ public class AppController {
                                @RequestParam String email,
                                @RequestParam String phone
                                ) throws IOException, MessagingException {
-
-        boolean emailError;
-        boolean phoneError = false;
 
         if (!(email.isEmpty() || phone.isEmpty())) {
             String emailSentTo = "jondan97@gmail.com";
@@ -202,46 +256,18 @@ public class AppController {
         } else {
 
             if (email.isEmpty()) {
-                emailError = true;
-                redir.addFlashAttribute("emailError", emailError);
+                redir.addFlashAttribute("emailError", true);
             }
 
             if(phone.isEmpty()){
-                phoneError = true;
-                redir.addFlashAttribute("phoneError", phoneError);
+                redir.addFlashAttribute("phoneError", true);
             }
 
             redir.addFlashAttribute("email", email);
+            redir.addFlashAttribute("phone", phone);
             return "redirect:/contactUs";
 
         }
     }
-
-    //roles: user, admin and visitor (has not signed in)
-    private String findRole(HttpServletRequest request){
-        String role = "";
-        if (request.getUserPrincipal() != null) {
-            if (request.isUserInRole("ROLE_ADMIN")) {
-                role = "admin";
-            }
-            else if (request.isUserInRole("ROLE_USER")) {
-                role = "user";
-            }
-        }
-        else {
-            role = "visitor";
-        }
-        return role;
-    }
-
-    private SessionUser getSessionUser (){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        SessionUser user = null;
-        if( SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated() && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) ){
-            user = (SessionUser) securityContext.getAuthentication().getPrincipal();
-        }
-        return user;
-    }
-
 }
 

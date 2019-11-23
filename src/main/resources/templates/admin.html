@@ -28,9 +28,9 @@
     <div th:if="${passwordMismatch}">
         Passwords must match.
     </div>
-    Company Name: <input type="text" name="companyName" th:value="${companyName}"><br>
-    <div th:if="${companyNameError}">
-        Company must not be empty.
+    Company Name: <input type="text" name="userCompanyName" th:value="${userCompanyName}"><br>
+    <div th:if="${userCompanyNameError}">
+        Company Name must not be empty.
     </div>
     <input type="submit" value="Submit">
 </form>

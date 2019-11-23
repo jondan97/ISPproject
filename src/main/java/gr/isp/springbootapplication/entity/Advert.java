@@ -33,6 +33,9 @@ public class Advert {
     @JoinColumn(name = "userId")
     private User user;
 
+    @Transient
+    private Long daysPosted;
+
     public Long getId() {
         return id;
     }
@@ -95,6 +98,14 @@ public class Advert {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getDaysPosted() {
+        return daysPosted;
+    }
+
+    public void setDaysPosted(Long daysPosted) {
+        this.daysPosted = daysPosted;
     }
 
     @Override

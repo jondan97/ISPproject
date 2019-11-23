@@ -3,6 +3,7 @@ package gr.isp.springbootapplication.web;
 import gr.isp.springbootapplication.entity.Role;
 import gr.isp.springbootapplication.entity.User;
 import gr.isp.springbootapplication.repository.UserRepository;
+import gr.isp.springbootapplication.service.SessionUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,27 +25,22 @@ public class AdminController {
     private UserRepository userRepository;
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(Model model) {
+        SessionUserService.determineUser(model);
         return "admin";
     }
 
     @RequestMapping(path="/admin/userAdding", method = RequestMethod.POST)
-    public String editAdvert (Model model,
-                              RedirectAttributes redir,
+    public String editAdvert (RedirectAttributes redir,
                               @RequestParam String email,
                               @RequestParam String password,
                               @RequestParam String passwordConfirmation,
-                              @RequestParam String companyName) {
-        boolean emailError;
-        boolean passwordError;
-        boolean passwordConfirmationError = false;
-        boolean companyNameError;
-        boolean passwordMismatch;
+                              @RequestParam String userCompanyName) {
 
-        if (!(email.isEmpty() || password.isEmpty() || companyName.isEmpty() || passwordConfirmation.isEmpty() || !password.equals(passwordConfirmation))){
+        if (!(email.isEmpty() || password.isEmpty() || userCompanyName.isEmpty() || passwordConfirmation.isEmpty() || !password.equals(passwordConfirmation))){
             User user = new User();
             user.setEmail(email);
-            user.setCompanyName(companyName);
+            user.setCompanyName(userCompanyName);
             //encrypt password
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
             String encodedPassword = bCryptPasswordEncoder.encode(password);
@@ -63,27 +59,22 @@ public class AdminController {
         else {
 
             if (email.isEmpty()){
-                emailError = true;
-                redir.addFlashAttribute("emailError", emailError);
+                redir.addFlashAttribute("emailError", true);
             }
 
             if(password.isEmpty()){
-                passwordError = true;
-                redir.addFlashAttribute("passwordError",passwordError);
+                redir.addFlashAttribute("passwordError", true);
             }
 
             if (passwordConfirmation.isEmpty()){
-                passwordConfirmationError = true;
-                redir.addFlashAttribute("passwordConfirmationError", passwordConfirmationError);
+                redir.addFlashAttribute("passwordConfirmationError", true);
             }
             else if (!password.equals(passwordConfirmation)){
-                passwordMismatch = true;
-                redir.addFlashAttribute("passwordMismatch",passwordMismatch);
+                redir.addFlashAttribute("passwordMismatch", true);
             }
 
-            if(companyName.isEmpty()){
-                companyNameError = true;
-                redir.addFlashAttribute("companyNameError", companyNameError);
+            if(userCompanyName.isEmpty()){
+                redir.addFlashAttribute("userCompanyNameError", true);
             }
 
         }
@@ -91,10 +82,9 @@ public class AdminController {
         redir.addFlashAttribute("email", email);
         redir.addFlashAttribute("password", password);
         redir.addFlashAttribute("passwordConfirmation", passwordConfirmation);
-        redir.addFlashAttribute("companyName", companyName);
+        redir.addFlashAttribute("userCompanyName", userCompanyName);
 
         return "redirect:/admin";
-
     }
 }
 
