@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
-<head>
-</head>
-<body th:fragment="navbar">
+<head></head>
+<body>
+    <div th:fragment="navbar">
+        <style>
+            .inBlock {
+                display: inline-block;
+            }
+        </style>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -17,7 +22,7 @@
                     <ul class="nav navbar-nav navbar-right" th:switch="${role}">
                         <li th:case="'user'" class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <div th:text="${companyName}"></div>
+                                <div th:text="${companyName}" class="inBlock"></div>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -31,7 +36,7 @@
                         </li>
                         <li th:case="'admin'" class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <div th:text="Admin"></div>
+                                <div th:text="Admin" class="inBlock"></div>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -50,5 +55,6 @@
                     </ul>
             </div>
         </nav>
+    </div>
 </body>
 </html>
