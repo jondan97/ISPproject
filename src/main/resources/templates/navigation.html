@@ -9,6 +9,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}" src="/js/main.js"></script>
+
 </head>
 <body>
     <div th:fragment="navbar">
@@ -20,11 +23,31 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a th:href="@{/}">Home</a></li>
                         <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
+                        <li><a th:href="@{/contactUs}">Contact Us</a></li>
+                        <li><div class="ddown">
+                            <button class="dropbtn">
+                                button
+                            </button>
+                            <div class="dropdown-content" id="ddownList">
+                                <a>link 1</a>
+                                <a>link 1</a>
+                            </div>
+                        </div></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a th:href="@{/login}">Login</a></li>
+                    <ul class="nav navbar-nav navbar-right" th:switch="${role}">
+                        <li th:case="'user'">
+                            <div class="ddown">
+                                <button th:onclick="'javascript:myFunction();'" class="dropbtn">
+                                    <div th:text="${companyName}"></div>
+                                </button>
+                                <div class="dropdown-content" id="ddownList1">
+                                    <a>link 1</a>
+                                    <a>link 1</a>
+                                </div>
+                            </div>
+                        <li th:case='*'>
+                            <a th:href="@{/login}">Login</a>
+                        </li>
                     </ul>
             </div>
         </nav>

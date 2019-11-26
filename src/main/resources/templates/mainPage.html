@@ -37,26 +37,26 @@
         <h1 th:inline="text">Hello anonymous user!</h1>
     </div>
 </div>
-<div class="container">
+<div class="container" id="mainTable">
 <table class="table table-condensed table-hover">
     <thead>
         <tr>
-            <td>Title</td>
-            <td>Company</td>
+            <td>Advert</td>
             <td>Industry</td>
             <td>Days Posted</td>
         </tr>
     </thead>
     <tbody>
+        <div th:each="advert : ${advertArray}">
         <tr th:if="${advertArray.isEmpty()}">
             <td colspan="2"> No Adverts Available </td>
         </tr>
-        <tr th:each="advert : ${advertArray}" class="test">
-            <td>
+        <tr class="test">
+            <td class="test2">
                 <a th:href="@{'/view/' + ${advert.getId()}}"
                    th:text="${advert.getTitle()}"></a>
             </td>
-            <td>
+            <td class="test2" id="companyName">
                 <a th:href="@{'/view/' + ${advert.getId()}}"
                    th:text="${advert.getUser().getCompanyName()}"></a>
             </td>
@@ -69,6 +69,8 @@
                    th:text="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"></a>
             </td>
         </tr>
+
+        </div>
     </tbody>
 </table>
 </div>
