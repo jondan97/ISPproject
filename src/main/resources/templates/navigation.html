@@ -2,19 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/main.js}" src="/js/main.js"></script>
-
 </head>
-<body>
-    <div th:fragment="navbar">
+<body th:fragment="navbar">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -22,35 +11,44 @@
                 </div>
                     <ul class="nav navbar-nav">
                         <li class="active"><a th:href="@{/}">Home</a></li>
-                        <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+
                         <li><a th:href="@{/contactUs}">Contact Us</a></li>
-                        <li><div class="ddown">
-                            <button class="dropbtn">
-                                button
-                            </button>
-                            <div class="dropdown-content" id="ddownList">
-                                <a>link 1</a>
-                                <a>link 1</a>
-                            </div>
-                        </div></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right" th:switch="${role}">
-                        <li th:case="'user'">
-                            <div class="ddown">
-                                <button th:onclick="'javascript:myFunction();'" class="dropbtn">
-                                    <div th:text="${companyName}"></div>
-                                </button>
-                                <div class="dropdown-content" id="ddownList1">
-                                    <a>link 1</a>
-                                    <a>link 1</a>
-                                </div>
-                            </div>
+                        <li th:case="'user'" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <div th:text="${companyName}"></div>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                                <li><a th:href="'javascript: document.logoutForm.submit()'">Logout</a>
+                                    <form name="logoutForm" th:action="@{/logout}" method="post">
+                                        <input hidden type="submit" value="Logout"/>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <li th:case="'admin'" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <div th:text="Admin"></div>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/admin}">Create User</a></li>
+                                <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                                <li><a th:href="'javascript: document.logoutForm.submit()'">Logout</a>
+                                    <form name="logoutForm" th:action="@{/logout}" method="post">
+                                        <input hidden type="submit" value="Logout"/>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                         <li th:case='*'>
                             <a th:href="@{/login}">Login</a>
                         </li>
                     </ul>
             </div>
         </nav>
-    </div>
 </body>
 </html>
