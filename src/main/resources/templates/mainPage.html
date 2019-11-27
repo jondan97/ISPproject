@@ -7,6 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var $rows = $('#table tr');
+            $('#search').keyup(function () {
+                var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+                    reg = RegExp(val, 'i'),
+                    text;
+
+                $rows.show().filter(function () {
+                    text = $(this).text().replace(/\s+/g, ' ');
+                    return !reg.test(text);
+                }).hide();
+
+                console.log('done searching');
+
+                if ($rows.find(':visible').length === 0) {
+                    $("#noResults").show();
+                } else {
+                    $("#noResults").hide();
+                }
+            });
+        });
+    </script>
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPageCSS.css}"/>
@@ -18,62 +43,51 @@
 
 <div th:switch="${role}">
     <div th:case="'admin'">
-        <p>User has logged in and is an admin.</p>
-        <h1 th:text="'Hello ' + ${companyName}"></h1>
-        <h1><a th:href="@{/admin}">admin</a></h1>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout"/>
-        </form>
+
     </div>
     <div th:case="'user'">
-        <p>User has logged in.</p>
-        <h1 th:text="'Hello ' + ${companyName}"></h1>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout"/>
-        </form>
+
     </div>
     <div th:case='*'>
-        <p>User has not logged in.</p>
-        <h1 th:inline="text">Hello anonymous user!</h1>
     </div>
 </div>
-<div class="container" id="mainTable">
-<table class="table table-condensed table-hover">
-    <thead>
-        <tr>
-            <td>Advert</td>
-            <td>Industry</td>
-            <td>Days Posted</td>
-        </tr>
-    </thead>
-    <tbody>
-        <div th:each="advert : ${advertArray}">
-        <tr th:if="${advertArray.isEmpty()}">
-            <td colspan="2"> No Adverts Available </td>
-        </tr>
-        <tr class="test">
-            <td class="test2">
-                <a th:href="@{'/view/' + ${advert.getId()}}"
-                   th:text="${advert.getTitle()}"></a>
-            </td>
-            <td class="test2" id="companyName">
-                <a th:href="@{'/view/' + ${advert.getId()}}"
-                   th:text="${advert.getUser().getCompanyName()}"></a>
-            </td>
-            <td>
-                <a th:href="@{'/view/' + ${advert.getId()}}"
-                   th:text="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></a>
-            </td>
-            <td>
-                <a th:href="@{'/view/' + ${advert.getId()}}"
-                   th:text="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"
-                    style="display: inline-block"></a> Days
-            </td>
-        </tr>
 
+<div class="container" id="mainTable">
+    <div class="panel panel-default">
+        <div class="input-group">
+            <input type="text" id="search" placeholder="Type to search">
         </div>
-    </tbody>
-</table>
+        <p hidden id="noResults">No results</p>
+    <table class="table table-condensed" id="table">
+        <thead></thead>
+        <tbody>
+            <div th:each="advert : ${advertArray}">
+                <tr th:if="${advertArray.isEmpty()}">
+                    <td colspan="2">No adverts to display</td>
+                </tr>
+                <tr>
+                    <td class="blockDisplay padTop" id="adTitle">
+                        <a th:href="@{'/view/' + ${advert.getId()}}"
+                           th:text="${advert.getTitle()}"></a>
+                    </td>
+                    <td class="blockDisplay" id="companyName">
+                        <a th:href="@{'/view/' + ${advert.getId()}}"
+                           th:text="${advert.getUser().getCompanyName()}"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/view/' + ${advert.getId()}}"
+                           th:text="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/view/' + ${advert.getId()}}"
+                           th:text="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"
+                            style="display: inline-block"></a> days ago
+                    </td>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+    </div>
 </div>
 </body>
 </html>

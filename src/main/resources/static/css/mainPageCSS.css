@@ -1,24 +1,43 @@
-.test>td>a {
+.table>tbody>tr>td>a {
     display: block; !important;
     color: black; !important;
     text-decoration: none; !important;
 }
 
-#companyName {
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.test2 {
-    display: block;
-}
+.blockDisplay { display: block; }
 
 .table>tbody>tr>td {
     border-top: none;
     vertical-align: middle;
-    padding: 0px;
+    padding-left: 12px;
 }
 
-.table>tbody>tr {
-    border-bottom: .5px solid;
+.table>tbody>tr { border-bottom: 1px solid lightgray; }
+
+#companyName {
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-top: 1px;
+}
+
+#adTitle {
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
+
+.panel-default {
+    border: 4px lightgray;
+    border-style: groove ridge ridge groove;
+    border-radius: 15px;
+}
+
+.input-group {
+    padding-left: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#noResults {
+    padding-left: 12px;
 }

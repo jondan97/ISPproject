@@ -9,20 +9,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-
     <div th:replace="/navigation :: navbar"></div>
 
-                <p></p>
-                <form th:action="@{/login}" method="post">
-                        <input type="text" placeholder="Email" name="email" th:value="${email}? ${email}"/>
-                        <input type="password" placeholder="Password" name="password"/>
-                    <button type="submit" >Enter</button>
-                </form>
-                <div th:if="${param.error}">
-		            Invalid email or password.
-		        </div>
-		        <div th:if="${param.logout}">
-		            You have been logged out.
-                </div>
+    <p></p>
+
+    <form th:action="@{/login}" method="post">
+        <input type="text" placeholder="Email" name="email" th:value="${email}? ${email}"/>
+        <input type="password" placeholder="Password" name="password"/>
+        <button type="submit">Enter</button>
+    </form>
+    <div th:if="${param.error}">Invalid email or password.</div>
+    <div th:if="${param.logout}">You have been logged out.</div>
 </body>
 </html>
