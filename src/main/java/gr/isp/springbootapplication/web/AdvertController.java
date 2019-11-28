@@ -164,6 +164,43 @@ public class AdvertController {
         return "myAdverts";
     }
 
+    @GetMapping(path = "/user/editAdvert") // Map ONLY POST Requests
+    public String editAdvertGet(Model model,
+                             RedirectAttributes redir,
+                             @RequestParam String action,
+                             @RequestParam String id
+
+    ) {
+        boolean idError = false;
+        long idLong = 0;
+        try {
+            if (!(id.isEmpty())) {
+                idLong = Long.parseLong(id);
+            }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
+            redir.addFlashAttribute("idError", true);
+        }
+        if (idError) {
+            redir.addFlashAttribute("advertProblem", true);
+            return "redirect:/user/myAdverts";
+        }
+        else {
+            Advert advert = advertRepository.findFirstById(idLong); //could be i
+            if (advert.getUser().getId() == SessionUserService.getSessionUser().getId()) {
+                if (action.equals("Delete")) {
+                    advertRepository.deleteById(idLong);
+                    redir.addFlashAttribute("advertDeleted", true);
+                    return "redirect:/user/myAdverts";
+                } else if (action.equals("Update")) {
+                    model.addAttribute("advert", advert);
+                    return "editAdvert";
+                }
+            }
+        }
+        return "myAdverts";
+    }
+
     @PostMapping(path = "/user/advertEditing") // Map ONLY POST Requests
     public String editAdvert(RedirectAttributes redir,
                              @RequestParam String action,
@@ -254,8 +291,8 @@ public class AdvertController {
                         redir.addFlashAttribute("body", body);
                         redir.addFlashAttribute("industry", industry);
                         redir.addFlashAttribute("salary", salary);
-
-                        return "redirect:/user/myAdverts";
+                        System.out.println("xaxaxaxa");
+                        return "redirect:/user/editAdvert";
                     }
                 }
             } else {
