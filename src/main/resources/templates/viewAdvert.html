@@ -9,85 +9,65 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+
 </head>
+
 <body>
 
 <div th:replace="/navigation :: navbar"></div>
 
-<table>
-    <tr>
-        <td>Title</td>
-        <td>Body</td>
-        <td>Industry</td>
-        <td>Salary</td>
-        <td>Time Posted</td>
-    </tr>
-    <tr>
-        <td><span th:text="${advert.getTitle()}"></span></td>
-        <td><span th:text="${advert.getBody()}"></span></td>
-        <td><span th:text="${advert.getIndustry()}"></span></td>
-        <td><span th:text="${advert.getSalary()}"></span></td>
-        <td><span th:text="${advert.getTimePosted()}"></span></td>
-    <tr>
-        <form th:action="@{'/view/' + ${advert.getId()} + '/apply'}" method="post">
-            <input type="text" name="id" hidden th:value="${advert.getId()}">
-            <td><input type="submit" name="action" value="Apply for Job"></td>
-        </form>
-    </tr>
-</table>
-
-    <div th:each="advert : ${advertArray}">
+<!--<span th:text="${advert.getTimePosted()}"></span>-->
 
     <div class="container" th:inline="text">
         <div class="panel panel-default">
             <div class="panel-body">
-                <form>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="md-form form-group">
-                                <label for="title">Job Title</label>
-                                <p id="title">[[${advert.getTitle()}]]</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="md-form form-group">
-                                <label for="status">Status</label>
-                                <p id="status">[[${advert.getStatus()}]]</p>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="title">Job Title</label>
+                        <p id="title">[[${advert.getTitle()}]]</p>
                     </div>
 
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            <div class="md-form form-group">
-                                <label for="body">Job Description</label>
-                                <p id="body">[[${advert.getBody()}]]</p>
-                            </div>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="time">Time Posted</label>
+                        <p id="time">Time Placeholder</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="body">Job Description</label>
+                        <p id="body" style="word-wrap: break-word">[[${advert.getBody()}]]</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="industry">Industry</label>
+                        <p id="industry">[[${advert.getIndustry()}]]</p>
                     </div>
 
-
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="md-form form-group">
-                                <label for="industry">Industry</label>
-                                <p id="industry">[[${advert.getIndustry()}]]</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="md-form form-group">
-                                <label for="salary">Salary</label>
-                                <p id="salary">[[${advert.getSalary()}]]</p>
-                            </div>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="salary">Salary</label>
+                        <p id="salary">[[${advert.getSalary()}]]</p>
                     </div>
-                </form>
+                </div>
+
+                <div class="btnPad">
+                    <button type="button" class="btn btn-default"
+                            th:onclick="'window.location.href=\'' +
+                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
+                        Apply
+                    </button>
+                </div>
+
+                <div class="btnPad">
+                    <button type="button" class="btn btn-default"
+                            th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                </div>
             </div>
         </div>
-    </div>
-
     </div>
 
 </body>
