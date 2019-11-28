@@ -48,13 +48,13 @@ public class AdvertController {
         return "myAdverts";
     }
 
-    @GetMapping(path = "/user/postAd")
+    @GetMapping(path = "/user/postAdvert")
     public String postAd(Model model) {
         SessionUserService.determineUser(model);
         return "postAdvert";
     }
 
-    @PostMapping(path = "/user/postAdding") // Map ONLY POST Requests
+    @PostMapping(path = "/user/advertAdding") // Map ONLY POST Requests
     public String addNewAdvert(RedirectAttributes redir,
                                @RequestParam String action,
                                @RequestParam String title,
@@ -101,6 +101,7 @@ public class AdvertController {
             ad.setUser(u);
 
             advertRepository.save(ad);
+            redir.addFlashAttribute("advertCreated", true);
             return "redirect:/user/myAdverts";
         } else {
             if (title.isEmpty()) {
@@ -115,18 +116,55 @@ public class AdvertController {
             redir.addFlashAttribute("industry", industry);
             redir.addFlashAttribute("salary", salary);
 
-            return "redirect:/user/postAd";
+            return "redirect:/user/postAdvert";
         }
     }
 
-    @GetMapping(path = "/user/allPosts")
+    @GetMapping(path = "/user/allAdverts")
     public @ResponseBody
     Iterable<Advert> getAllUsers() {
         // This returns a JSON or XML with the users
         return advertRepository.findByUserId(SessionUserService.getSessionUser().getId());
     }
 
-    @PostMapping(path = "/user/postEditing") // Map ONLY POST Requests
+    @PostMapping(path = "/user/editAdvert") // Map ONLY POST Requests
+    public String editAdvert(Model model,
+                             RedirectAttributes redir,
+                             @RequestParam String action,
+                             @RequestParam String id
+
+    ) {
+        boolean idError = false;
+        long idLong = 0;
+        try {
+            if (!(id.isEmpty())) {
+                idLong = Long.parseLong(id);
+            }
+        } catch (NumberFormatException | NullPointerException nfe) {
+            idError = true;
+            redir.addFlashAttribute("idError", true);
+        }
+        if (idError) {
+            redir.addFlashAttribute("advertProblem", true);
+            return "redirect:/user/myAdverts";
+        }
+        else {
+            Advert advert = advertRepository.findFirstById(idLong); //could be i
+            if (advert.getUser().getId() == SessionUserService.getSessionUser().getId()) {
+                if (action.equals("Delete")) {
+                    advertRepository.deleteById(idLong);
+                    redir.addFlashAttribute("advertDeleted", true);
+                    return "redirect:/user/myAdverts";
+                } else if (action.equals("Update")) {
+                    model.addAttribute("advert", advert);
+                    return "editAdvert";
+                }
+            }
+        }
+        return "myAdverts";
+    }
+
+    @PostMapping(path = "/user/advertEditing") // Map ONLY POST Requests
     public String editAdvert(RedirectAttributes redir,
                              @RequestParam String action,
                              @RequestParam String id,
@@ -156,20 +194,11 @@ public class AdvertController {
 
             Advert advertBefore = advertRepository.findFirstById(idLong);
 
-            if (advertBefore == null || !(status.equals("Visible") || status.equals("Invisible") || status.equals("Draft") || status.equals("Expired"))) {
+            if (advertBefore == null || !(status.equals("Visible") || status.equals("Invisible") || status.equals("Draft")) && status.equals("Expired")) {
                 redir.addFlashAttribute("advertProblem", true);
                 return "redirect:/user/myAdverts";
             } else if (advertBefore.getUser().getId() == SessionUserService.getSessionUser().getId()) {
-
-                if (advertBefore.getStatus().equals("Expired")) {
-                    if (action.equals("Delete")) {
-                        advertRepository.deleteById(idLong);
-                        return "redirect:/user/myAdverts";
-                    } else {
-                        redir.addFlashAttribute("advertExpired", true);
-                        return "redirect:/user/myAdverts";
-                    }
-                } else if (action.equals("Update")) {
+                if (action.equals("Update")) {
                     boolean salaryError = false;
                     Integer salaryInt = 0;
 
@@ -211,6 +240,7 @@ public class AdvertController {
                         advertAfter.setUser(advertBefore.getUser());
                         advertAfter.setTimePosted(advertBefore.getTimePosted());
                         advertRepository.save(advertAfter);
+                        redir.addFlashAttribute("advertEdited", true);
                         return "redirect:/user/myAdverts";
                     } else {
                         if (title.isEmpty()) {
@@ -227,15 +257,13 @@ public class AdvertController {
 
                         return "redirect:/user/myAdverts";
                     }
-                } else if (action.equals("Delete")) {
-                    advertRepository.deleteById(idLong);
-                    return "redirect:/user/myAdverts";
                 }
             } else {
                 redir.addFlashAttribute("advertProblem", true);
                 return "redirect:/user/myAdverts";
             }
             // no idea why i need this return and the compiler insists that i put a return here
+            redir.addFlashAttribute("noIdeaWhatYouDidError", true);
             return "redirect:/user/myAdverts";
         }
     }

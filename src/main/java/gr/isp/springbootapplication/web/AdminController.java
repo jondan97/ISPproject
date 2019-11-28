@@ -37,26 +37,33 @@ public class AdminController {
                               @RequestParam String passwordConfirmation,
                               @RequestParam String userCompanyName) {
 
-        if (!(email.isEmpty() || password.isEmpty() || userCompanyName.isEmpty() || passwordConfirmation.isEmpty() || !password.equals(passwordConfirmation))){
-            User user = new User();
-            user.setEmail(email);
-            user.setCompanyName(userCompanyName);
-            //encrypt password
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
-            String encodedPassword = bCryptPasswordEncoder.encode(password);
-            user.setPassword(encodedPassword);
-            //create role for user
-            Set<Role> userRoles = new HashSet<Role>();
-            Role role = new Role();
-            role.setId((long) 2);
-            role.setRole("ROLE_USER");
-            userRoles.add(role);
-            user.setRoles(userRoles);
+        boolean userExists = userRepository.findByEmail(email).isPresent();
 
-            userRepository.save(user);
-            return "redirect:/admin";
+        if (!userExists && !(email.isEmpty() || password.isEmpty() || userCompanyName.isEmpty() || passwordConfirmation.isEmpty() || !password.equals(passwordConfirmation))){
+                User user = new User();
+                user.setEmail(email);
+                user.setCompanyName(userCompanyName);
+                //encrypt password
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
+                String encodedPassword = bCryptPasswordEncoder.encode(password);
+                user.setPassword(encodedPassword);
+                //create role for user
+                Set<Role> userRoles = new HashSet<Role>();
+                Role role = new Role();
+                role.setId((long) 2);
+                role.setRole("ROLE_USER");
+                userRoles.add(role);
+                user.setRoles(userRoles);
+                userRepository.save(user);
+
+                redir.addFlashAttribute("userCreated", true);
+                return "redirect:/admin";
         }
         else {
+
+            if (userExists){
+                redir.addFlashAttribute("userExists", true);
+            }
 
             if (email.isEmpty()){
                 redir.addFlashAttribute("emailError", true);

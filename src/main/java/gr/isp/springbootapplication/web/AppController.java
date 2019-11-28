@@ -199,6 +199,7 @@ public class AppController {
                             "<h1> Contact E-mail: " + email + "</h1><br>" +
                             "CV can be found attached to this e-mail";
                     emailService.sendEmailWithAttachement(emailSentTo, emailSubject, emailBody, cv);
+                    redir.addFlashAttribute("userApplied", true);
                     return "redirect:/view/" + advertApplyingFor.getId();
                 } else {
                     if (firstname.isEmpty()) {
@@ -252,6 +253,7 @@ public class AppController {
                     "<h1> Contact E-mail: " + email + "</h1>" +
                     "<h1> Phone Number: " + phone + "</h1>";
             emailService.sendEmail(emailSentTo, emailSubject, emailBody);
+            redir.addFlashAttribute("userContacted", true);
             return "redirect:/";
         } else {
 

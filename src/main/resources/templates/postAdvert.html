@@ -14,7 +14,7 @@
 
 <div th:replace="/navigation :: navbar"></div>
 
-    <form th:action="@{/user/postAdding}" method="post">
+    <form th:action="@{/user/advertAdding}" method="post">
     Job Title: <input type="text" name="title" th:value="${title}"><br>
     <div th:if="${titleError}">
         Title must not be empty.
@@ -36,7 +36,7 @@
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-body">
-            <form th:action="@{/user/postAdding}" method="post">
+            <form th:action="@{/user/advertAdding}" method="post">
                 <div class="form-row">
                     <div class="col-md-6">
                         <div class="md-form form-group">
