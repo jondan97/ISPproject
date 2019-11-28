@@ -74,7 +74,7 @@
                     </style>
 
                     <label class="btn btn-default">
-                        Upload CV<input type="file" name="cv" th:value="${cv}" hidden>
+                        Upload CV <input type="file" name="cv" th:value="${cv}" hidden>
                     </label>
                     <br/>
                     <div th:text="${cvError} ? 'File uploaded must be a PDF.' : 'Please upload a PDF of your CV.'">
