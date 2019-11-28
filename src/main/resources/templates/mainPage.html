@@ -7,35 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            var $rows = $('#table tr');
-            $('#search').keyup(function () {
-                var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
-                    reg = RegExp(val, 'i'),
-                    text;
-
-                $rows.show().filter(function () {
-                    text = $(this).text().replace(/\s+/g, ' ');
-                    return !reg.test(text);
-                }).hide();
-
-                console.log('done searching');
-
-                if ($rows.find(':visible').length === 0) {
-                    $("#noResults").show();
-                } else {
-                    $("#noResults").hide();
-                }
-            });
-        });
-    </script>
-
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/mainPageCSS.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainTable.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
 
+    <script type="text/javascript" th:src="@{/js/searching.js}"></script>
 </head>
 <body>
 
@@ -55,7 +33,7 @@
 <div class="container" id="mainTable">
     <div class="panel panel-default">
         <div class="input-group">
-            <input type="text" id="search" placeholder="Type to search">
+            <input type="text" id="search" placeholder="Type to search" class="form-control">
         </div>
         <p hidden id="noResults">No results</p>
     <table class="table table-condensed" id="table">
@@ -66,11 +44,11 @@
                     <td colspan="2">No adverts to display</td>
                 </tr>
                 <tr>
-                    <td class="blockDisplay padTop" id="adTitle">
+                    <td id="adTitle">
                         <a th:href="@{'/view/' + ${advert.getId()}}"
                            th:text="${advert.getTitle()}"></a>
                     </td>
-                    <td class="blockDisplay" id="companyName">
+                    <td id="companyName">
                         <a th:href="@{'/view/' + ${advert.getId()}}"
                            th:text="${advert.getUser().getCompanyName()}"></a>
                     </td>

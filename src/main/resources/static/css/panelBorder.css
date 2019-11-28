@@ -1,0 +1,5 @@
+.panel-default {
+    border: 4px lightgray;
+    border-style: groove ridge ridge groove;
+    border-radius: 15px;
+}

@@ -1,0 +1,15 @@
+.errMsg {
+    color: red;
+    font-size: 10px;
+}
+
+label {
+    font-weight: bold;
+    padding-top: 12px;
+}
+
+.btnPad {
+    float: right;
+    padding-bottom: 12px;
+    padding-right: 12px;
+}
