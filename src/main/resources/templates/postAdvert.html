@@ -9,81 +9,69 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
+
 </head>
 <body>
 
 <div th:replace="/navigation :: navbar"></div>
 
-    <form th:action="@{/user/advertAdding}" method="post">
-    Job Title: <input type="text" name="title" th:value="${title}"><br>
-    <div th:if="${titleError}">
-        Title must not be empty.
-    </div>
-    Job Body: <input type="text" name="body" th:value="${body}"><br>
-    <div th:if="${bodyError}">
-        Body must not be empty.
-    </div>
-    Industry: <input type="text" name="industry" th:value="${industry}"><br>
-    Salary: <input type="number" name="salary" th:value="${salary}"><br>
-    <div th:if="${salaryError}">
-        Salary must be a number.
-    </div>
-    <input type="submit" name="action" value="Save">
-    <input type="submit" name="action" value="Post">
-</form>
-
-
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-body">
             <form th:action="@{/user/advertAdding}" method="post">
+
                 <div class="form-row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="md-form form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" th:value="${email}">
+                            <label for="title">Job Title</label>
+                            <input type="text" name="title" id="title" class="form-control"
+                                   th:value="${title}">
 
-                            <div class="errMsg" th:if="${emailError}">Field must not be empty</div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="md-form form-group">
-                            <label for="userCompanyName">Company Name</label>
-                            <input type="text" name="userCompanyName" id="userCompanyName"
-                                   class="form-control" th:value="${userCompanyName}">
-
-                            <div class="errMsg" th:if="${userCompanyNameError}">Field must not be empty</div>
+                            <div class="errMsg" th:if="${titleError}">Field must not be empty</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="md-form form-group">
+                            <label for="body">Job Description</label>
+                            <textarea class="form-control" name="body" id="body" rows="5"
+                                      style="resize: none" th:text="${body}">
+                            </textarea>
+
+                            <div class="errMsg" th:if="${bodyError}">Field must not be empty</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
                     <div class="col-md-6">
                         <div class="md-form form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control" th:value="${password}">
-
-                            <div class="errMsg" th:if="${passwordError}">Field must not be empty</div>
+                            <label for="industry">Industry</label>
+                            <input class="form-control" type="text" name="industry" id="industry" th:value="${industry}">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="md-form form-group">
-                            <label for="passwordConfirmation">Confirm Password</label>
-                            <input type="password" name="passwordConfirmation" id="passwordConfirmation"
-                                   class="form-control" th:value="${passwordConfirmation}">
+                            <label for="salary">Salary</label>
+                            <input class="form-control" type="number" name="salary" id="salary" th:value="${salary}">
 
-                            <div class="errMsg" th:if="${passwordConfirmationError}">
-                                Field must not be empty
-                            </div>
-                            <div class="errMsg" th:if="${passwordMismatch}">Passwords must match</div>
+                            <div th:if="${salaryError}">Salary must be a number.</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="btnPad">
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="submit" name="action" class="btn btn-default" value="Post">Post</button>
+                </div>
+
+                <div class="btnPad">
+                    <button type="submit" name="action" class="btn btn-default" value="Save">Save</button>
                 </div>
 
                 <div class="btnPad">

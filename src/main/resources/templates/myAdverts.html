@@ -30,7 +30,7 @@
             <td colspan="2">No Adverts Posted</td>
         </tr>
         <tr th:each="advert : ${advertArray}">
-            <form th:action="@{/user/advertEditing}" method="post">
+            <form th:action="@{/user/editAdvert}" method="post">
                 <td><input type="text" name="title" th:value="${advert.getTitle()}"></td>
                 <td><input type="text" name="body" th:value="${advert.getBody()}"></td>
                 <td><input type="text" name="industry" th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></td>

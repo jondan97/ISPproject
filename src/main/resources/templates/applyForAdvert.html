@@ -10,37 +10,89 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
+
 </head>
 
 <body>
 
-<div th:replace="/navigation :: navbar"></div>
+    <div th:replace="/navigation :: navbar"></div>
 
-    <h3 th:text="'Applying for ' + ${advert.getTitle()} + ' by: ' + ${advert.getUser().getCompanyName()}"></h3>
-    <h4>Fill in the required information:</h4>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3 th:text="'Applying for ' + ${advert.getTitle()} + ' by: ' + ${advert.getUser().getCompanyName()}"></h3>
+                <h4>Fill in the required information:</h4>
+                <form th:action="@{/view/sendingApplication}" enctype="multipart/form-data" method="post">
+                    <input type="hidden" name="id" th:value="${advert.getId()}">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="firstname">First Name</label>
+                                <input type="text" name="firstname" id="firstname" class="form-control"
+                                       th:value="${firstname}"/>
 
-    <form th:action="@{/view/sendingApplication}" enctype="multipart/form-data" method="post">
-        <input type="hidden" name="id" th:value="${advert.getId()}">
-        First Name: <input type="text" name="firstname" th:value="${firstname}"/><br>
-        <div th:if="${firstNameError}">
-            First Name must not be empty.
+                                <div th:if="${firstNameError}">Field must not be empty</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="lastname">Last Name</label>
+                                <input type="text" name="lastname" id="lastname" class="form-control"
+                                       th:value="${lastname}"/>
+
+                                <div th:if="${lastNameError}">Field must not be empty</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="number" name="phone" id="phone" class="form-control"
+                                       th:value="${phone}">
+                                <div class="errMsg" th:if="${phoneError}">Field must not be empty</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control"
+                                       th:value="${email}">
+
+                                <div class="errMsg" th:if="${emailError}">Field must not be empty</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        [hidden] {display: none !important;}
+                    </style>
+
+                    <label class="btn btn-default">
+                        Upload CV<input type="file" name="cv" th:value="${cv}" hidden>
+                    </label>
+                    <br/>
+                    <div th:text="${cvError} ? 'File uploaded must be a PDF.' : 'Please upload a PDF of your CV.'">
+                    </div>
+
+                    <div class="btnPad">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+
+                    <div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
-        Last Name: <input type="text" name="lastname" th:value="${lastname}"/><br>
-        <div th:if="${lastNameError}">
-            Last Name must not be empty.
-        </div>
-        Phone Number: <input type="number" name="phone" th:value="${phone}"/><br>
-        <div th:if="${phoneError}">
-            Phone Number must not be empty.
-        </div>
-        E-mail: <input type="email" name="email" th:value="${email}"/><br>
-        <div th:if="${emailError}">
-            E-mail must not be empty.
-        </div>
-        CV: <input type="file" name="cv" th:value="${cv}"/> <br/>
-        <div th:text="${cvError} ? 'File uploaded must be a PDF.' : 'Please upload a PDF of your CV.'">
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+    </div>
+
 </body>
 </html>
