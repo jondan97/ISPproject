@@ -1,13 +1,10 @@
-.table>tbody>tr>td>a {
-    display: block; !important;
-    color: black; !important;
-    text-decoration: none; !important;
-}
-
 .table>tbody>tr>td {
-    border-top: none;
     vertical-align: middle;
     padding-left: 12px;
+    border-top: none;
 }
 
-.table>tbody>tr { border-bottom: 1px solid lightgray; }
+.table>tbody>tr {
+    border-bottom: 2px solid lightgray;
+    cursor: pointer;
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Main Page</title>
 
@@ -14,58 +15,44 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
 
     <script type="text/javascript" th:src="@{/js/searching.js}"></script>
+
 </head>
+
 <body>
 
-<div th:replace="/navigation :: navbar"></div>
+    <div th:insert="/navigation :: navbar"></div>
 
-<div th:switch="${role}">
-    <div th:case="'admin'">
-
-    </div>
-    <div th:case="'user'">
-
-    </div>
-    <div th:case='*'>
-    </div>
-</div>
-
-<div class="container" id="mainTable">
-    <div class="panel panel-default">
-        <div class="input-group">
-            <input type="text" id="search" placeholder="Type to search" class="form-control">
-        </div>
-        <p hidden id="noResults">No results</p>
-    <table class="table table-condensed" id="table">
-        <thead></thead>
-        <tbody>
-            <div th:each="advert : ${advertArray}">
-                <tr th:if="${advertArray.isEmpty()}">
-                    <td colspan="2">No adverts to display</td>
-                </tr>
-                <tr>
-                    <td id="adTitle">
-                        <a th:href="@{'/view/' + ${advert.getId()}}"
-                           th:text="${advert.getTitle()}"></a>
-                    </td>
-                    <td id="companyName">
-                        <a th:href="@{'/view/' + ${advert.getId()}}"
-                           th:text="${advert.getUser().getCompanyName()}"></a>
-                    </td>
-                    <td>
-                        <a th:href="@{'/view/' + ${advert.getId()}}"
-                           th:text="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></a>
-                    </td>
-                    <td>
-                        <a th:href="@{'/view/' + ${advert.getId()}}"
-                           th:text="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"
-                            style="display: inline-block"></a> days ago
-                    </td>
-                </tr>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="input-group">
+                <input type="text" id="search" placeholder="Search" class="form-control">
             </div>
-        </tbody>
-    </table>
+            <p hidden id="noResults">No results</p>
+            <table class="table table-condensed">
+                <thead></thead>
+                <tbody th:each="advert : ${advertArray}">
+                    <tr th:if="${advertArray.isEmpty()}">
+                        <td colspan="2">No adverts to display</td>
+                    </tr>
+
+                    <tr th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '\''">
+                        <td id="adTitle" th:text="${advert.getTitle()}"></td>
+
+                        <td id="companyName" th:text="${advert.getUser().getCompanyName()}"></td>
+
+                        <td th:text="${!advert.getIndustry().isEmpty()} ?
+                                ${advert.getIndustry()} : 'No Industry'"></td>
+
+                        <td th:text="${advert.getDaysPosted() != 0} ?
+                                ${advert.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="tableInfo"><i>Click on a row to view an advert!</i></div>
+        </div>
     </div>
-</div>
+
 </body>
+
 </html>

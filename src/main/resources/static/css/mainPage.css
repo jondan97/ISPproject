@@ -18,10 +18,24 @@
     padding-top: 10px;
     padding-bottom: 10px;
     width: 200px;
+    align-self: center;
 }
 
 #noResults {
     padding-top: 18px;
     padding-left: 12px;
     vertical-align: middle;
+}
+
+#tableInfo {
+    padding: 12px;
+    color: gray;
+    text-align: center;
+}
+
+#postButton {
+    float: left;
+    padding: 12px;
+    display: inline-block;
+    align-self: center;
 }

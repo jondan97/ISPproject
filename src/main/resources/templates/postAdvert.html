@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<div th:replace="/navigation :: navbar"></div>
+    <div th:insert="/navigation :: navbar"></div>
 
 <div class="container">
     <div class="panel panel-default">
@@ -76,7 +76,7 @@
 
                 <div class="btnPad">
                     <button type="button" class="btn btn-default"
-                            th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                            th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
                 </div>
 
             </form>

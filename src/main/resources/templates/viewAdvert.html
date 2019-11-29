@@ -16,9 +16,9 @@
 
 <body>
 
-<div th:replace="/navigation :: navbar"></div>
+    <div th:insert="/navigation :: navbar"></div>
 
-<!--<span th:text="${advert.getTimePosted()}"></span>-->
+    <!--<span th:text="${advert.getTimePosted()}"></span>-->
 
     <div class="container" th:inline="text">
         <div class="panel panel-default">
@@ -62,9 +62,19 @@
                     </button>
                 </div>
 
-                <div class="btnPad">
-                    <button type="button" class="btn btn-default"
-                            th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+
+                <div th:unless="${role} eq 'user' or ${role} eq 'admin'">
+                    <div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                    </div>
+                </div>
+
+                <div th:if="${role} eq 'user' or ${role} eq 'admin'">
+                    <div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>

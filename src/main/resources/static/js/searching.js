@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var $rows = $('#table tr');
+    var $rows = $('.table tr');
     $('#search').keyup(function () {
         var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
             reg = RegExp(val, 'i'),
