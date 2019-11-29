@@ -14,6 +14,7 @@ public class Advert {
     @Column
     private String title;
 
+    @Lob
     @Column
     private String body;
 

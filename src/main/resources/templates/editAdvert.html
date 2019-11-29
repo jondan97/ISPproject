@@ -40,21 +40,10 @@
                 <option value="Draft" selected>Draft</option>
             </select>
         </div>
-        <div th:case="'Expired'">
-            <input type="text" name="status" readonly th:value="'Expired'">
-        </div>
     </td>
     <td><input type="hidden" name="id" th:value="${advert.getId()}"></td>
     <td><input type="hidden" name="userId" th:value="${advert.getUser().getId()}"></td>
-    <div th:switch="${advert.getStatus()}">
-        <div th:case="'Expired'">
-            <td><input type="submit" name="action" value="Delete"></td>
-        </div>
-        <div th:case="*">
-            <td><input type="submit" name="action" value="Update"></td>
-            <td><input type="submit" name="action" value="Delete"></td>
-        </div>
-    </div>
+    <td><input type="submit" name="action" value="Update"></td>
 </form>
 </body>
 </html>

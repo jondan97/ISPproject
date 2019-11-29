@@ -44,7 +44,7 @@
                     </tr>
 
                     <form th:action="@{/user/editAdvert}" method="post">
-                    <tr name="action" th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '\''">
+                    <tr name="action" th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '?myAdverts=true\''">
                         <td id="adTitle" th:text="${advert.getTitle()}"></td>
 
                         <td id="companyName" th:text="${advert.getUser().getCompanyName()}"></td>

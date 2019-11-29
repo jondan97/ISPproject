@@ -134,6 +134,7 @@ public class AdvertController {
                              @RequestParam String id
 
     ) {
+        SessionUserService.determineUser(model);
         boolean idError = false;
         long idLong = 0;
         try {
@@ -156,6 +157,12 @@ public class AdvertController {
                     redir.addFlashAttribute("advertDeleted", true);
                     return "redirect:/user/myAdverts";
                 } else if (action.equals("Update")) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime nowTooLong = LocalDateTime.now();
+                    String nowStr = nowTooLong.format(formatter);
+                    LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
+                    Long daysPosted = Duration.between(advert.getTimePosted(), now).toDays();
+                    advert.setDaysPosted(daysPosted);
                     model.addAttribute("advert", advert);
                     return "editAdvert";
                 }
@@ -164,41 +171,12 @@ public class AdvertController {
         return "myAdverts";
     }
 
+    //redirected here only when body or title inserted was empty
     @GetMapping(path = "/user/editAdvert") // Map ONLY POST Requests
-    public String editAdvertGet(Model model,
-                             RedirectAttributes redir,
-                             @RequestParam String action,
-                             @RequestParam String id
-
+    public String editAdvertGet(Model model
     ) {
-        boolean idError = false;
-        long idLong = 0;
-        try {
-            if (!(id.isEmpty())) {
-                idLong = Long.parseLong(id);
-            }
-        } catch (NumberFormatException | NullPointerException nfe) {
-            idError = true;
-            redir.addFlashAttribute("idError", true);
-        }
-        if (idError) {
-            redir.addFlashAttribute("advertProblem", true);
-            return "redirect:/user/myAdverts";
-        }
-        else {
-            Advert advert = advertRepository.findFirstById(idLong); //could be i
-            if (advert.getUser().getId() == SessionUserService.getSessionUser().getId()) {
-                if (action.equals("Delete")) {
-                    advertRepository.deleteById(idLong);
-                    redir.addFlashAttribute("advertDeleted", true);
-                    return "redirect:/user/myAdverts";
-                } else if (action.equals("Update")) {
-                    model.addAttribute("advert", advert);
-                    return "editAdvert";
-                }
-            }
-        }
-        return "myAdverts";
+        SessionUserService.determineUser(model);
+        return "editAdvert";
     }
 
     @PostMapping(path = "/user/advertEditing") // Map ONLY POST Requests
@@ -286,12 +264,14 @@ public class AdvertController {
                         if (body.isEmpty()) {
                             redir.addFlashAttribute("bodyError", true);
                         }
-
-                        redir.addFlashAttribute("title", title);
-                        redir.addFlashAttribute("body", body);
-                        redir.addFlashAttribute("industry", industry);
-                        redir.addFlashAttribute("salary", salary);
-                        System.out.println("xaxaxaxa");
+                        //only goes in here when title or body is empty, redirects to GET: editAdvert
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        LocalDateTime nowTooLong = LocalDateTime.now();
+                        String nowStr = nowTooLong.format(formatter);
+                        LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
+                        Long daysPosted = Duration.between(advertBefore.getTimePosted(), now).toDays();
+                        advertBefore.setDaysPosted(daysPosted);
+                        redir.addFlashAttribute("advert", advertBefore);
                         return "redirect:/user/editAdvert";
                     }
                 }
