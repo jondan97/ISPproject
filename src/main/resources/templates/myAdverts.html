@@ -27,7 +27,7 @@
         <div class="panel panel-default">
             <div id="postButton">
                 <button type="button" class="btn btn-default" style="width: 100px"
-                        th:onclick="'window.location.href=\'' + @{/user/postAdvert} + '\''">Create Post</button>
+                        th:onclick="'window.location.href=\'' + @{/user/createAdvert} + '\''">Create Post</button>
             </div>
 
             <div class="input-group">
@@ -61,12 +61,20 @@
                                    th:value="${advert.getUser().getId()}"></td>
 
                         <td>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="submit" name="action" value="Update"
-                                    class="btn btn-default">Edit</button>
-                            <button type="submit" name="action" value="Delete"
-                                    class="btn btn-default">Delete</button>
-                        </div>
+                            <div th:switch="${advert.getStatus()}">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div th:case="'Expired'">
+                                        <button type="submit" name="action" value="Delete"
+                                                class="btn btn-default">Delete</button>
+                                    </div>
+                                    <div th:case="*">
+                                        <button type="submit" name="action" value="Update"
+                                                class="btn btn-default">Edit</button>
+                                        <button type="submit" name="action" value="Delete"
+                                                class="btn btn-default">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </form>
@@ -79,7 +87,7 @@
 
     <!-- DIVIDER -->
 
-    <!--<h1> <a th:href="@{/user/postAdvert}">Post an Advert</a> </h1>
+    <!--<h1> <a th:href="@{/user/createAdvert}">Post an Advert</a> </h1>
     <table>
         <tr>
             <td>Title</td>

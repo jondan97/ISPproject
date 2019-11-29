@@ -48,13 +48,13 @@ public class AdvertController {
         return "myAdverts";
     }
 
-    @GetMapping(path = "/user/postAdvert")
+    @GetMapping(path = "/user/createAdvert")
     public String postAd(Model model) {
         SessionUserService.determineUser(model);
-        return "postAdvert";
+        return "createAdvert";
     }
 
-    @PostMapping(path = "/user/advertAdding") // Map ONLY POST Requests
+    @PostMapping(path = "/user/addingAdvert") // Map ONLY POST Requests
     public String addNewAdvert(RedirectAttributes redir,
                                @RequestParam String action,
                                @RequestParam String title,
@@ -116,7 +116,7 @@ public class AdvertController {
             redir.addFlashAttribute("industry", industry);
             redir.addFlashAttribute("salary", salary);
 
-            return "redirect:/user/postAdvert";
+            return "redirect:/user/createAdvert";
         }
     }
 
@@ -179,7 +179,7 @@ public class AdvertController {
         return "editAdvert";
     }
 
-    @PostMapping(path = "/user/advertEditing") // Map ONLY POST Requests
+    @PostMapping(path = "/user/editingAdvert") // Map ONLY POST Requests
     public String editAdvert(RedirectAttributes redir,
                              @RequestParam String action,
                              @RequestParam String id,
@@ -209,7 +209,7 @@ public class AdvertController {
 
             Advert advertBefore = advertRepository.findFirstById(idLong);
 
-            if (advertBefore == null || !(status.equals("Visible") || status.equals("Invisible") || status.equals("Draft")) && status.equals("Expired")) {
+            if (advertBefore == null || advertBefore.getStatus().equals("Expired") || !(status.equals("Visible") || status.equals("Invisible") || status.equals("Draft"))) {
                 redir.addFlashAttribute("advertProblem", true);
                 return "redirect:/user/myAdverts";
             } else if (advertBefore.getUser().getId() == SessionUserService.getSessionUser().getId()) {
