@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var $rows = $('.table tr');
+    var $rows = $('.table>tbody>tr');
     $('#search').keyup(function () {
         var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
             reg = RegExp(val, 'i'),
@@ -14,8 +14,10 @@ $(document).ready(function() {
 
         if ($rows.find(':visible').length === 0) {
             $("#noResults").show();
+            $("#tableInfo").hide();
         } else {
             $("#noResults").hide();
+            $("#tableInfo").show();
         }
     });
 });
