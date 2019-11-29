@@ -11,7 +11,13 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
-
+    <style>
+        #body {
+            word-wrap: break-word;
+            white-space: pre-line;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,14 +37,15 @@
 
                     <div class="col-md-6">
                         <label for="time">Time Posted</label>
-                        <p id="time">Time Placeholder</p>
+                        <p id="time" th:text="${advert.getDaysPosted() != 0} ?
+                                ${advert.getDaysPosted()} + ' days ago' : 'Today'">Time Placeholder</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
                         <label for="body">Job Description</label>
-                        <p id="body" style="word-wrap: break-word">[[${advert.getBody()}]]</p>
+                        <p id="body">[[${advert.getBody()}]]</p>
                     </div>
                 </div>
 
@@ -61,19 +68,24 @@
                         Apply
                     </button>
                 </div>
-
-
-                <div th:unless="${role} eq 'user' or ${role} eq 'admin'">
-                    <div class="btnPad">
-                        <button type="button" class="btn btn-default"
-                                th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                <div th:switch="${param.myAdverts}">
+                    <div th:case="null">
+                        <div class="btnPad">
+                            <button type="button" class="btn btn-default"
+                                    th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                        </div>
                     </div>
-                </div>
-
-                <div th:if="${role} eq 'user' or ${role} eq 'admin'">
-                    <div class="btnPad">
-                        <button type="button" class="btn btn-default"
-                                th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                    <div th:case="*">
+                        <div th:switch="${param.myAdverts[0]}">
+                            <div class="btnPad" th:case="'true'">
+                                <button type="button" class="btn btn-default"
+                                        th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                            </div>
+                            <div class="btnPad" th:case="*">
+                                <button type="button" class="btn btn-default"
+                                        th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

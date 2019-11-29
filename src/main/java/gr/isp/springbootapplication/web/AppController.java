@@ -48,8 +48,6 @@ public class AppController {
     @GetMapping({"/"})
     public String mainPage(Model model) {
         SessionUserService.determineUser(model);
-
-
         Iterable<Advert> adverts = advertRepository.findByStatus("Visible");
         List<Advert> advertArray = new ArrayList<Advert>();
         for (Advert ad: adverts) {
@@ -72,7 +70,7 @@ public class AppController {
         return "mainPage";
     }
 
-    @RequestMapping(value="/view/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/view/{id}")
     public String viewAdvert(Model model,
                              @PathVariable String id
     ) {
@@ -87,21 +85,33 @@ public class AppController {
             idError = true;
         }
         if (idError) {
-            return "error";
+            return "redirect:/error";
         }
         else {
             Advert advert = advertRepository.findFirstById(idLong);
             if (advert == null){
-                return "error";
+                return "redirect:/error";
             }
             else {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime nowTooLong = LocalDateTime.now();
+                String nowStr = nowTooLong.format(formatter);
+                LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
+                Long daysPosted = Duration.between(advert.getTimePosted(), now).toDays();
+                if(daysPosted >= 30){
+                    advert.setStatus("Expired");
+                    advertRepository.save(advert);
+                 }
+                advert.setDaysPosted(daysPosted);
+
+
                 model.addAttribute("advert", advert);
                 return "viewAdvert";
             }
         }
     }
 
-    @RequestMapping(value="/view/{id}/apply", method=RequestMethod.POST)
+    @RequestMapping(value="/view/{id}/apply")
     public String applyForAdvertPost(Model model,
                                 @PathVariable String id
     ) {
@@ -116,41 +126,12 @@ public class AppController {
             idError = true;
         }
         if (idError) {
-            return "error";
+            return "redirect:/error";
         }
         else {
             Advert advert = advertRepository.findFirstById(idLong);
             if (advert == null){
-                return "error";
-            }
-            else {
-                model.addAttribute("advert", advert);
-                return "applyForAdvert";
-            }
-        }
-    }
-
-    @RequestMapping(value="/view/{id}/apply", method=RequestMethod.GET)
-    public String applyForAdvertGet(Model model,
-                                 @PathVariable String id
-    ) {
-        SessionUserService.determineUser(model);
-        boolean idError = false;
-        long idLong = 0;
-        try {
-            if (!(id.isEmpty())) {
-                idLong = Long.parseLong(id);
-            }
-        } catch (NumberFormatException | NullPointerException nfe) {
-            idError = true;
-        }
-        if (idError) {
-            return "error";
-        }
-        else {
-            Advert advert = advertRepository.findFirstById(idLong);
-            if (advert == null){
-                return "error";
+                return "redirect:/error";
             }
             else {
                 model.addAttribute("advert", advert);
@@ -179,13 +160,13 @@ public class AppController {
             idError = true;
         }
         if(idError){
-            return "error";
+            return "redirect:/error";
         }
         else {
             Advert advertApplyingFor = advertRepository.findFirstById(idLong);
             //could be a Long but still a random number (advert does not exist on the DB)
             if (advertApplyingFor == null) {
-                return "error";
+                return "redirect:/error";
             //business logic here
             } else {
                 if (!(firstname.isEmpty() || lastname.isEmpty() || phone.isEmpty() || email.isEmpty() || !FilenameUtils.getExtension(cv.getOriginalFilename()).equals("pdf"))) {
@@ -236,7 +217,8 @@ public class AppController {
 
 
     @GetMapping({"/contactUs"})
-    public String contactUs() {
+    public String contactUs(Model model) {
+        SessionUserService.determineUser(model);
         return "contactUs";
     }
 
