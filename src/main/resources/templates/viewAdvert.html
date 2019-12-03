@@ -61,15 +61,16 @@
                     </div>
                 </div>
 
-                <div class="btnPad">
-                    <button type="button" class="btn btn-default"
-                            th:onclick="'window.location.href=\'' +
-                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
-                        Apply
-                    </button>
-                </div>
                 <div th:switch="${param.myAdverts}">
                     <div th:case="null">
+                        <div class="btnPad">
+                            <button type="button" class="btn btn-default"
+                                    th:onclick="'window.location.href=\'' +
+                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
+                                Apply
+                            </button>
+                        </div>
+
                         <div class="btnPad">
                             <button type="button" class="btn btn-default"
                                     th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
@@ -77,13 +78,27 @@
                     </div>
                     <div th:case="*">
                         <div th:switch="${param.myAdverts[0]}">
-                            <div class="btnPad" th:case="'true'">
+                            <div th:case="'true'">
+                                <div class="btnPad">
                                 <button type="button" class="btn btn-default"
                                         th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                                </div>
                             </div>
-                            <div class="btnPad" th:case="*">
-                                <button type="button" class="btn btn-default"
+
+                            <div th:case="*">
+                                <div class="btnPad">
+                                    <button type="button" class="btn btn-default"
+                                            th:onclick="'window.location.href=\'' +
+                                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
+                                        Apply
+                                    </button>
+                                </div>
+
+                                <div class="btnPad">
+                                    <button type="button" class="btn btn-default"
                                         th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>

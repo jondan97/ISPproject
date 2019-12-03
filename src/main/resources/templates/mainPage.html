@@ -24,16 +24,27 @@
 
     <div class="container-fluid">
         <div class="panel panel-default">
-            <div class="input-group">
-                <input type="text" id="search" placeholder="Search" class="form-control">
+            <div class="row-fluid">
+                <div class="col">
+                    <div class="input-group" style="width: 200px">
+                        <input type="text" id="search" placeholder="Search" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col">
+                    <p id="tableInfo">Click on a row to view an advert!</p>
+                </div>
             </div>
-            <p hidden id="noResults">No results</p>
+
             <table class="table table-condensed">
                 <thead></thead>
-                <tbody th:each="advert : ${advertArray}">
-                    <tr th:if="${advertArray.isEmpty()}">
-                        <td colspan="2">No adverts to display</td>
-                    </tr>
+                <tbody>
+                <div th:each="advert : ${advertArray}">
+                    <div th:if="${advertArray.isEmpty()}">
+                        <tr>
+                            <td>No adverts to display</td>
+                        </tr>
+                    </div>
 
                     <tr th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '\''">
                         <td id="adTitle" th:text="${advert.getTitle()}"></td>
@@ -46,10 +57,11 @@
                         <td th:text="${advert.getDaysPosted() != 0} ?
                                 ${advert.getDaysPosted()} + ' days ago' : 'Today'"></td>
                     </tr>
+                </div>
+
+                <tr style="border-bottom: none; padding: 12px"><td></td></tr>
                 </tbody>
             </table>
-
-            <div id="tableInfo"><i>Click on a row to view an advert!</i></div>
         </div>
     </div>
 

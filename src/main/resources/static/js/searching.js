@@ -13,11 +13,10 @@ $(document).ready(function() {
         console.log('done searching');
 
         if ($rows.find(':visible').length === 0) {
-            $("#noResults").show();
-            $("#tableInfo").hide();
-        } else {
-            $("#noResults").hide();
-            $("#tableInfo").show();
-        }
+            var string = document.getElementById("tableInfo").innerHTML;
+            var replacement = string.replace("Click on a row to view an advert!", "No results");
+            document.getElementById("tableInfo").innerHTML = replacement;
+        } else
+            document.getElementById("tableInfo").innerHTML = "Click on a row to view an advert!";
     });
 });

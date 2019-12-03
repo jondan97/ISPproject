@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 
-    <title>Title</title>
+    <title>Edit Advert</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +11,115 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
+
 </head>
+
 <body>
 
     <div th:insert="/navigation :: navbar"></div>
 
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form th:action="@{/user/editingAdvert}" method="post">
+
+                    <div class="form-row">
+                        <div class="col-md-10">
+                            <div class="md-form form-group">
+                                <label for="title">Job Title</label>
+                                <input type="text" name="title" id="title" class="form-control"
+                                       th:value="${advert.getTitle()}">
+
+                                <div class="errMsg" th:if="${titleError}">Field must not be empty</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="md-form form-group">
+                                <label for="title">Status</label>
+                                <div th:switch="${advert.getStatus()}">
+                                    <div th:case="'Visible'">
+                                        <select  name="status" class="form-control">
+                                            <option value="Visible" selected>Visible</option>
+                                            <option value="Invisible">Invisible</option>
+                                        </select>
+                                    </div>
+
+                                    <div th:case="'Invisible'">
+                                        <select  name="status" class="form-control">
+                                            <option value="Visible">Visible</option>
+                                            <option value="Invisible" selected>Invisible</option>
+                                        </select>
+                                    </div>
+
+                                    <div th:case="'Draft'">
+                                        <select  name="status" class="form-control">
+                                            <option value="Visible">Post</option>
+                                            <option value="Draft" selected>Draft</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="md-form form-group">
+                                <label for="body">Job Description</label>
+                                <textarea class="form-control" name="body" id="body" rows="5"
+                                          style="resize: none" th:text="${advert.getBody()}">
+                            </textarea>
+
+                                <div class="errMsg" th:if="${bodyError}">Field must not be empty</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="industry">Industry</label>
+                                <input class="form-control" type="text" name="industry" id="industry"
+                                       th:value="${!advert.getIndustry().isEmpty()} ?
+                                                 ${advert.getIndustry()} : 'No Industry'">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="salary">Salary</label>
+                                <input class="form-control" type="number" name="salary" id="salary"
+                                       th:value="${advert.getSalary() != null} ?
+                                                 ${advert.getSalary()} : 'No Salary'">
+
+                                <div th:if="${salaryError}">Salary must be a number.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btnPad">
+                        <button type="submit" name="action" class="btn btn-default" value="Update">Update</button>
+                    </div>
+
+                    <div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                    </div>
+
+                    <input type="hidden" name="id" th:value="${advert.getId()}">
+                    <input type="hidden" name="userId" th:value="${advert.getUser().getId()}">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <!--
 <form th:action="@{/user/editingAdvert}" method="post">
     <td><input type="text" name="title" th:value="${advert.getTitle()}"></td>
     <td><input type="text" name="body" th:value="${advert.getBody()}"></td>
@@ -45,5 +150,7 @@
     <td><input type="hidden" name="userId" th:value="${advert.getUser().getId()}"></td>
     <td><input type="submit" name="action" value="Update"></td>
 </form>
+-->
 </body>
+
 </html>

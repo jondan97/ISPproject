@@ -13,6 +13,22 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
 
+    <script type="text/javascript" th:src="@{/js/uploadCheck.js}"></script>
+
+    <style>
+        [hidden] { display: none !important; }
+
+        #cvErrorStyle {
+            padding-top: 7px;
+            padding-bottom: 12px;
+        }
+
+        h3 {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -22,8 +38,9 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h3 th:text="'Applying for ' + ${advert.getTitle()} + ' by: ' + ${advert.getUser().getCompanyName()}"></h3>
-                <h4>Fill in the required information:</h4>
+                <h3 th:text="${'Applying for &quot;' + advert.getTitle() +
+                               '&quot; by ' + advert.getUser().getCompanyName()}"></h3>
+
                 <form th:action="@{/view/sendingApplication}" enctype="multipart/form-data" method="post">
                     <input type="hidden" name="id" th:value="${advert.getId()}">
                     <div class="form-row">
@@ -33,7 +50,7 @@
                                 <input type="text" name="firstname" id="firstname" class="form-control"
                                        th:value="${firstname}"/>
 
-                                <div th:if="${firstNameError}">Field must not be empty</div>
+                                <div class="errMsg" th:if="${firstNameError}">Field must not be empty</div>
                             </div>
                         </div>
 
@@ -43,7 +60,7 @@
                                 <input type="text" name="lastname" id="lastname" class="form-control"
                                        th:value="${lastname}"/>
 
-                                <div th:if="${lastNameError}">Field must not be empty</div>
+                                <div class="errMsg" th:if="${lastNameError}">Field must not be empty</div>
                             </div>
                         </div>
                     </div>
@@ -54,6 +71,7 @@
                                 <label for="phone">Phone Number</label>
                                 <input type="number" name="phone" id="phone" class="form-control"
                                        th:value="${phone}">
+
                                 <div class="errMsg" th:if="${phoneError}">Field must not be empty</div>
                             </div>
                         </div>
@@ -69,15 +87,14 @@
                         </div>
                     </div>
 
-                    <style>
-                        [hidden] {display: none !important;}
-                    </style>
+                    <div class="form-row">
+                        <div class="col-md-2"><label class="btn btn-default" id="uploadCV">
+                            Upload CV <input type="file" name="cv" th:value="${cv}" hidden>
+                        </label></div>
 
-                    <label class="btn btn-default">
-                        Upload CV <input type="file" name="cv" th:value="${cv}" hidden>
-                    </label>
-                    <br/>
-                    <div th:text="${cvError} ? 'File uploaded must be a PDF.' : 'Please upload a PDF of your CV.'">
+                        <div class="col-md-10" id="cvErrorStyle" th:text="${cvError} ?
+                             ' File uploaded must be a PDF' : ' Please upload a PDF of your CV'">
+                        </div>
                     </div>
 
                     <div class="btnPad">
