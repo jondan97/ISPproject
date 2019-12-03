@@ -39,17 +39,18 @@
             <table class="table table-condensed">
                 <thead></thead>
                 <tbody>
-                <div th:each="advert : ${advertArray}">
-                    <div th:if="${advertArray.isEmpty()}">
-                        <tr>
-                            <td>No adverts to display</td>
-                        </tr>
-                    </div>
 
+                <div th:if="${advertArray.isEmpty()}">
+                    <tr>
+                        <td colspan="4">No adverts to display</td>
+                    </tr>
+                </div>
+
+                <div th:unless="${advertArray.isEmpty()}" th:each="advert : ${advertArray}">
                     <tr th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '\''">
-                        <td id="adTitle" th:text="${advert.getTitle()}"></td>
+                        <td class="line1" th:text="${advert.getTitle()}"></td>
 
-                        <td id="companyName" th:text="${advert.getUser().getCompanyName()}"></td>
+                        <td class="line2" th:text="${advert.getUser().getCompanyName()}"></td>
 
                         <td th:text="${!advert.getIndustry().isEmpty()} ?
                                 ${advert.getIndustry()} : 'No Industry'"></td>

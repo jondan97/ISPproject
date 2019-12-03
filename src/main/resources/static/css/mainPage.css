@@ -1,15 +1,17 @@
-#companyName {
+@media (min-width: 584px) {  .container { width: 584px; }  }
+
+.line1 {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
+
+.line2 {
     display: block;
     font-size: 12px;
     font-weight: bold;
     padding-bottom: 10px;
     padding-top: 1px;
-}
-
-#adTitle {
-    display: block;
-    padding-top: 10px;
-    padding-bottom: 1px;
 }
 
 .input-group {
