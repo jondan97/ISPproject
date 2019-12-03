@@ -30,7 +30,11 @@ public class AdvertController {
     public String myAdverts(Model model) {
         SessionUserService.determineUser(model);
         Iterable<Advert> adverts = advertRepository.findByUserId(SessionUserService.getSessionUser().getId());
-        List<Advert> advertArray = new ArrayList<Advert>();
+        List<Advert> advertArrayVisible = new ArrayList<Advert>();
+        List<Advert> advertArrayInvisible = new ArrayList<Advert>();
+        List<Advert> advertArrayDraft = new ArrayList<Advert>();
+        List<Advert> advertArrayExpired = new ArrayList<Advert>();
+
         for (Advert ad: adverts) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime nowTooLong = LocalDateTime.now();
@@ -42,9 +46,25 @@ public class AdvertController {
                 advertRepository.save(ad);
             }
             ad.setDaysPosted(daysPosted);
-            advertArray.add(ad);
+            if (ad.getStatus().equals("Visible")){
+                advertArrayVisible.add(ad);
+            }
+            else if (ad.getStatus().equals("Invisible")){
+                advertArrayInvisible.add(ad);
+            }
+            else if (ad.getStatus().equals("Draft")){
+                advertArrayDraft.add(ad);
+            }
+            else if (ad.getStatus().equals("Expired")){
+                advertArrayExpired.add(ad);
+            }
+
         }
-        model.addAttribute("advertArray", advertArray);
+        model.addAttribute("advertArrayVisible", advertArrayVisible);
+        model.addAttribute("advertArrayInvisible", advertArrayInvisible);
+        model.addAttribute("advertArrayDraft", advertArrayDraft);
+        model.addAttribute("advertArrayExpired", advertArrayExpired);
+
         return "myAdverts";
     }
 
