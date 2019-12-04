@@ -1,0 +1,14 @@
+[hidden] { display: none !important; }
+
+h3 {
+    padding-left: 15px;
+    padding-right: 25px;
+}
+
+@media (min-width: 992px) {
+    #cvErrorStyle {
+        margin-left: -45px;
+        padding-top: 7px;
+    }
+    .container { width: 992px; }
+}
