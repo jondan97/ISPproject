@@ -5,11 +5,13 @@
 }
 
 .table>tbody>tr {
-    border-bottom: 2px dashed lightgray;
+    border-top: 2px dashed lightgray;
+    border-bottom: none;
     cursor: pointer;
 }
 
 .table>thead>tr>th {
     padding-left: 12px;
+    border-top: 2px solid lightgray;
     border-bottom: 2px solid lightgray;
 }

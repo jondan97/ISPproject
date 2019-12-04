@@ -1,4 +1,6 @@
-@media (min-width: 584px) {  .container { width: 584px; }  }
+@media (min-width: 584px) {
+    .container { width: 584px; }
+}
 
 .line1 {
     display: block;

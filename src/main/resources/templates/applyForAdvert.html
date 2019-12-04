@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
 
     <script type="text/javascript" th:src="@{/js/uploadCheck.js}"></script>
 
@@ -50,7 +51,7 @@
                                 <input type="text" name="firstname" id="firstname" class="form-control"
                                        th:value="${firstname}"/>
 
-                                <div class="errMsg" th:if="${firstNameError}">Field must not be empty</div>
+                                <div class="errMsg" th:if="${firstNameError}">Field must not be empty<br></div>
                             </div>
                         </div>
 
@@ -68,16 +69,6 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="md-form form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="number" name="phone" id="phone" class="form-control"
-                                       th:value="${phone}">
-
-                                <div class="errMsg" th:if="${phoneError}">Field must not be empty</div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="md-form form-group">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control"
                                        th:value="${email}">
@@ -85,14 +76,28 @@
                                 <div class="errMsg" th:if="${emailError}">Field must not be empty</div>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="md-form form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="number" name="phone" id="phone" class="form-control"
+                                       th:value="${phone}">
+                                <div hidden>YEEEEEEEEEET</div>
+                                <div class="errMsg" th:if="${phoneError}">Field must not be empty</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="col-md-2"><label class="btn btn-default" id="uploadCV">
-                            Upload CV <input type="file" name="cv" th:value="${cv}" hidden>
-                        </label></div>
+                    <!-- EMPTY ROW TO DEAL WITH "UPLOAD CV BUTTON" MOVING WHEN ERRORS ARE DISPLAYED -->
+                    <div class="form-row"><div class="col-md-12"></div></div>
 
-                        <div class="col-md-10" id="cvErrorStyle" th:text="${cvError} ?
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="file" name="cv" id="cv" th:value="${cv}" hidden>
+                            <label class="btn btn-default" id="uploadCV" for="cv">Upload CV</label>
+                        </div>
+
+                        <div class="form-group col-md-10" id="cvErrorStyle" th:text="${cvError} ?
                              ' File uploaded must be a PDF' : ' Please upload a PDF of your CV'">
                         </div>
                     </div>
