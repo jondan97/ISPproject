@@ -119,39 +119,6 @@
         </div>
     </div>
 
-    <!-- DIVIDER -->
-    <!--
-<form th:action="@{/user/editingAdvert}" method="post">
-    <td><input type="text" name="title" th:value="${advert.getTitle()}"></td>
-    <td><input type="text" name="body" th:value="${advert.getBody()}"></td>
-    <td><input type="text" name="industry" th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></td>
-    <td><input type="number" name="salary" th:value="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'"></td>
-    <td><input type="text" name="daysPosted"  readonly th:value="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"></td>
-    <td th:switch="${advert.getStatus()}">
-        <div th:case="'Visible'">
-            <select  name="status">
-                <option value="Visible" selected>Visible</option>
-                <option value="Invisible">Invisible</option>
-            </select>
-        </div>
-        <div th:case="'Invisible'">
-            <select  name="status">
-                <option value="Visible">Visible</option>
-                <option value="Invisible" selected>Invisible</option>
-            </select>
-        </div>
-        <div th:case="'Draft'">
-            <select  name="status">
-                <option value="Visible">Post</option>
-                <option value="Draft" selected>Draft</option>
-            </select>
-        </div>
-    </td>
-    <td><input type="hidden" name="id" th:value="${advert.getId()}"></td>
-    <td><input type="hidden" name="userId" th:value="${advert.getUser().getId()}"></td>
-    <td><input type="submit" name="action" value="Update"></td>
-</form>
--->
 </body>
 
 </html>
