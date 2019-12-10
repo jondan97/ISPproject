@@ -11,18 +11,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <!-- CUSTOM CONFIRM BUTTONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainTable.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
 
-    <style>
-        @media (min-width: 584px) {
-            .container { width: 584px; }
-        }
-    </style>
+    <style> @media (min-width: 584px) { .container { width: 584px; } } </style>
+    <script>
+        $(document).ready(function() {
+            $('.btn').click(function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
 
     <script type="text/javascript" th:src="@{/js/searching.js}"></script>
+    <script type="text/javascript" th:src="@{/js/popups.js}"></script>
 
 </head>
 
@@ -55,48 +63,6 @@
             </div>
 
             <table class="table table-condensed">
-
-<!-- YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET -->
-
-                <!--<div th:each="advert : ${advertArrayVisible}">
-                <form th:action="@{/user/editAdvert}" method="post">
-
-                <thead></thead>
-
-                <tbody>
-                        <tr name="action" th:onclick="'window.location.href=\'' +
-                            @{'/view/' + ${advert.getId()}} + '?myAdverts=true\''">
-                            <td class="line1" th:text="${advert.getTitle()}"></td>
-
-                            <td class="line2" th:text="${!advert.getIndustry().isEmpty()} ?
-                                ${advert.getIndustry()} : 'No Industry'"></td>
-
-                            <td th:text="${advert.getDaysPosted() != 0} ?
-                                ${advert.getDaysPosted()} + ' days ago' : 'Today'"></td>
-
-                            <td>
-                                <div class="btn-group" role="group" aria-label="myAdsBtn"
-                                     style="float: right; padding-right: 12px">
-                                    <button type="submit" name="action" value="Update"
-                                            class="btn btn-default">Edit</button>
-                                    <button type="submit" name="action" value="Delete"
-                                            class="btn btn-default">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <input type="hidden" name="id" th:value="${advert.getId()}">
-                        <input type="hidden" name="userId" th:value="${advert.getUser().getId()}">
-
-                <tr style="border-bottom: none; padding: 12px"><td></td></tr>
-
-                </tbody>
-
-                </form>
-                </div>-->
-
-<!-- YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET -->
-
                 <!-- display visible ads -->
                 <thead><tr><th colspan="4">Visible</th></tr></thead>
                 <tbody>
@@ -107,30 +73,36 @@
                     </div>
 
                     <div th:unless="${advertArrayVisible.isEmpty()}" th:each="adVis : ${advertArrayVisible}">
-                        <form th:action="@{/user/editAdvert}" method="post">
-                            <tr name="action" th:onclick="'window.location.href=\'' +
-                                              @{'/view/' + ${adVis.getId()}} + '?myAdverts=true\''">
+                        <tr th:onclick="'window.location.href=\'' +
+                                          @{'/view/' + ${adVis.getId()}} + '?myAdverts=true\''">
+                            <form th:action="@{/user/editAdvert}" method="post">
                                 <td class="line1" th:text="${adVis.getTitle()}"></td>
 
                                 <td class="line2" th:text="${adVis.getIndustry()}"></td>
 
                                 <td th:text="${adVis.getDaysPosted() != 0} ?
-                                             ${adVis.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                                                 ${adVis.getDaysPosted()} + ' days ago' : 'Today'"></td>
 
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="myAdsBtn"
-                                        style="float: right; padding-right: 12px">
-                                        <button type="submit" name="action" value="Update"
-                                                class="btn btn-default">Edit</button>
-                                        <button type="submit" name="action" value="Delete"
-                                                class="btn btn-default">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
+                                <button hidden type="submit" name="action" value="Update"
+                                        th:id="'updat' + ${adVis.getId()}"></button>
+                                <button hidden type="submit" name="action" value="Delete"
+                                        th:id="'delet' + ${adVis.getId()}"></button>
 
-                            <input type="hidden" name="id" th:value="${adVis.getId()}">
-                            <input type="hidden" name="userId" th:value="${adVis.getUser().getId()}">
-                        </form>
+                                <input type="hidden" name="id" th:value="${adVis.getId()}">
+                                <input type="hidden" name="userId" th:value="${adVis.getUser().getId()}">
+                            </form>
+
+                            <td>
+                                <div class="btn-group" role="group" aria-label="myAdsBtn"
+                                     style="float: right; padding-right: 12px">
+                                    <button class="btn btn-default"
+                                            th:onclick="'updat(' + ${adVis.getId()} + ')'">Edit</button>
+                                    <button class="btn btn-default"
+                                            th:onclick="'delet(' + ${adVis.getId()} + ')'">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+
                     </div>
                 </tbody>
 
@@ -145,30 +117,35 @@
                     </div>
 
                     <div th:unless="${advertArrayInvisible.isEmpty()}" th:each="adInvis : ${advertArrayInvisible}">
-                        <form th:action="@{/user/editAdvert}" method="post">
-                            <tr name="action" th:onclick="'window.location.href=\'' +
-                                              @{'/view/' + ${adInvis.getId()}} + '?myAdverts=true\''">
+                        <tr name="action" th:onclick="'window.location.href=\'' +
+                                          @{'/view/' + ${adInvis.getId()}} + '?myAdverts=true\''">
+                            <form th:action="@{/user/editAdvert}" method="post">
                                 <td class="line1" th:text="${adInvis.getTitle()}"></td>
 
                                 <td class="line2" th:text="${adInvis.getIndustry()}"></td>
 
                                 <td th:text="${adInvis.getDaysPosted() != 0} ?
-                                             ${adInvis.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                                                 ${adInvis.getDaysPosted()} + ' days ago' : 'Today'"></td>
 
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="myAdsBtn"
-                                        style="float: right; padding-right: 12px">
-                                        <button type="submit" name="action" value="Update"
-                                                class="btn btn-default">Edit</button>
-                                        <button type="submit" name="action" value="Delete"
-                                                class="btn btn-default">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
+                                <button hidden type="submit" name="action" value="Update"
+                                        th:id="'updat' + ${adInvis.getId()}"></button>
+                                <button hidden type="submit" name="action" value="Delete"
+                                        th:id="'delet' + ${adInvis.getId()}"></button>
 
-                            <input type="hidden" name="id" th:value="${adInvis.getId()}">
-                            <input type="hidden" name="userId" th:value="${adInvis.getUser().getId()}">
-                        </form>
+                                <input type="hidden" name="id" th:value="${adInvis.getId()}">
+                                <input type="hidden" name="userId" th:value="${adInvis.getUser().getId()}">
+                            </form>
+
+                            <td>
+                                <div class="btn-group" role="group" aria-label="myAdsBtn"
+                                     style="float: right; padding-right: 12px">
+                                    <button class="btn btn-default"
+                                            th:onclick="'updat(' + ${adInvis.getId()} + ')'">Edit</button>
+                                    <button class="btn btn-default"
+                                            th:onclick="'delet(' + ${adInvis.getId()} + ')'">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
                     </div>
                 </tbody>
 
@@ -182,30 +159,35 @@
                     </div>
 
                     <div th:unless="${advertArrayDraft.isEmpty()}" th:each="adDraft : ${advertArrayDraft}">
-                        <form th:action="@{/user/editAdvert}" method="post">
-                            <tr name="action" th:onclick="'window.location.href=\'' +
-                                              @{'/view/' + ${adDraft.getId()}} + '?myAdverts=true\''">
+                        <tr name="action" th:onclick="'window.location.href=\'' +
+                                          @{'/view/' + ${adDraft.getId()}} + '?myAdverts=true\''">
+                            <form th:action="@{/user/editAdvert}" method="post">
                                 <td class="line1" th:text="${adDraft.getTitle()}"></td>
 
                                 <td class="line2" th:text="${adDraft.getIndustry()}"></td>
 
                                 <td th:text="${adDraft.getDaysPosted() != 0} ?
-                                             ${adDraft.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                                                 ${adDraft.getDaysPosted()} + ' days ago' : 'Today'"></td>
 
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="myAdsBtn"
-                                        style="float: right; padding-right: 12px">
-                                        <button type="submit" name="action" value="Update"
-                                                class="btn btn-default">Edit</button>
-                                        <button type="submit" name="action" value="Delete"
-                                                class="btn btn-default">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
+                                <button hidden type="submit" name="action" value="Update"
+                                        th:id="'updat' + ${adDraft.getId()}"></button>
+                                <button hidden type="submit" name="action" value="Delete"
+                                        th:id="'delet' + ${adDraft.getId()}"></button>
 
-                            <input type="hidden" name="id" th:value="${adDraft.getId()}">
-                            <input type="hidden" name="userId" th:value="${adDraft.getUser().getId()}">
-                        </form>
+                                <input type="hidden" name="id" th:value="${adDraft.getId()}">
+                                <input type="hidden" name="userId" th:value="${adDraft.getUser().getId()}">
+                            </form>
+
+                            <td>
+                                <div class="btn-group" role="group" aria-label="myAdsBtn"
+                                     style="float: right; padding-right: 12px">
+                                    <button class="btn btn-default"
+                                            th:onclick="'updat(' + ${adDraft.getId()} + ')'">Edit</button>
+                                    <button class="btn btn-default"
+                                            th:onclick="'delet(' + ${adDraft.getId()} + ')'">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
                     </div>
                 </tbody>
 
@@ -221,17 +203,30 @@
                     <div th:unless="${advertArrayExpired.isEmpty()}" th:each="adExp : ${advertArrayExpired}">
                         <tr name="action" th:onclick="'window.location.href=\'' +
                                           @{'/view/' + ${adExp.getId()}} + '?myAdverts=true\''">
-                            <td class="line1" th:text="${adExp.getTitle()}"></td>
+                            <form th:action="@{/user/editAdvert}" method="post">
+                                <td class="line1" th:text="${adExp.getTitle()}"></td>
 
-                            <td class="line2" th:text="${adExp.getIndustry()}"></td>
+                                <td class="line2" th:text="${adExp.getIndustry()}"></td>
 
-                            <td th:text="${adExp.getDaysPosted() != 0} ?
-                                     ${adExp.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                                <td th:text="${adExp.getDaysPosted() != 0} ?
+                                                 ${adExp.getDaysPosted()} + ' days ago' : 'Today'"></td>
+
+                                <button hidden type="submit" name="action" value="Update"
+                                        th:id="'updat' + ${adExp.getId()}"></button>
+                                <button hidden type="submit" name="action" value="Delete"
+                                        th:id="'delet' + ${adExp.getId()}"></button>
+
+                                <input type="hidden" name="id" th:value="${adExp.getId()}">
+                                <input type="hidden" name="userId" th:value="${adExp.getUser().getId()}">
+                            </form>
 
                             <td>
-                                <div style="float: right; padding-right: 12px">
-                                    <button type="submit" name="action" value="Delete"
-                                            class="btn btn-default">Delete</button>
+                                <div class="btn-group" role="group" aria-label="myAdsBtn"
+                                     style="float: right; padding-right: 12px">
+                                    <button class="btn btn-default"
+                                            th:onclick="'updat(' + ${adExp.getId()} + ')'">Edit</button>
+                                    <button class="btn btn-default"
+                                            th:onclick="'delet(' + ${adExp.getId()} + ')'">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -241,69 +236,6 @@
 
         </div>
     </div>
-
-    <!-- DIVIDER -->
-
-    <!--<h1> <a th:href="@{/user/createAdvert}">Post an Advert</a> </h1>
-    <table>
-        <tr>
-            <td>Title</td>
-            <td>Body</td>
-            <td>Industry</td>
-            <td>Salary</td>
-            <td>Days Ago</td>
-            <td>Status</td>
-        </tr>
-        <tr th:if="${advertArray.isEmpty()}">
-            <td colspan="2">No Adverts Posted</td>
-        </tr>
-        <tr th:each="advert : ${advertArray}">
-            <form th:action="@{/user/editAdvert}" method="post">
-                <td><input type="text" name="title" th:value="${advert.getTitle()}"></td>
-                <td><input type="text" name="body" th:value="${advert.getBody()}"></td>
-                <td><input type="text" name="industry"
-                           th:value="${!advert.getIndustry().isEmpty()} ? ${advert.getIndustry()} : 'No Industry'"></td>
-                <td><input type="number" name="salary"
-                           th:value="${advert.getSalary() != null} ? ${advert.getSalary()} : 'No Salary'"></td>
-                <td><input type="text" name="daysPosted" readonly
-                           th:value="${advert.getDaysPosted() != 0} ? ${advert.getDaysPosted()} : 'Today'"></td>
-                <td th:switch="${advert.getStatus()}">
-                    <div th:case="'Visible'">
-                    <select  name="status">
-                        <option value="Visible" selected>Visible</option>
-                        <option value="Invisible">Invisible</option>
-                    </select>
-                    </div>
-                    <div th:case="'Invisible'">
-                    <select  name="status">
-                        <option value="Visible">Visible</option>
-                        <option value="Invisible" selected>Invisible</option>
-                    </select>
-                    </div>
-                    <div th:case="'Draft'">
-                    <select  name="status">
-                        <option value="Visible">Post</option>
-                        <option value="Draft" selected>Draft</option>
-                    </select>
-                    </div>
-                    <div th:case="'Expired'">
-                        <input type="text" name="status" readonly th:value="'Expired'">
-                    </div>
-                </td>
-                <td><input type="hidden" name="id" th:value="${advert.getId()}"></td>
-                <td><input type="hidden" name="userId" th:value="${advert.getUser().getId()}"></td>
-                <div th:switch="${advert.getStatus()}">
-                <div th:case="'Expired'">
-                    <td><input type="submit" name="action" value="Delete"></td>
-                </div>
-                <div th:case="*">
-                        <td><input type="submit" name="action" value="Update"></td>
-                        <td><input type="submit" name="action" value="Delete"></td>
-                </div>
-                </div>
-            </form>
-        </tr>
-    </table>-->
 
 </body>
 </html>
