@@ -56,6 +56,7 @@ public class AdminController {
                 user.setRoles(userRoles);
                 userRepository.save(user);
 
+                redir.addFlashAttribute("notificationMessage", true);
                 redir.addFlashAttribute("userCreated", true);
                 return "redirect:/admin";
         }
