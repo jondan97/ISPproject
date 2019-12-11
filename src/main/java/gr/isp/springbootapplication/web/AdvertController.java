@@ -105,9 +105,11 @@ public class AdvertController {
             ad.setSalary(salaryInt);
             if (action.equals("Post")){
                 ad.setStatus("Visible");
+                redir.addFlashAttribute("advertPosted", true);
             }
             else if (action.equals("Save")){
                 ad.setStatus("Draft");
+                redir.addFlashAttribute("advertDrafted", true);
             }
 
             //LocalDateTime.now() creates an object that is too long for SQL, so we have to cut the last parts (the nanoseconds) in order to not insert corrupt date to the DB, besides we don't need that much of a precision
