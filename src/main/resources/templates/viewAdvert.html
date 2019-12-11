@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
 
     <style>
         #body {
@@ -28,8 +29,13 @@
 
     <!--<span th:text="${advert.getTimePosted()}"></span>-->
 
+    <h1>AD INFO</h1>
+
     <div class="container" th:inline="text">
         <div class="panel panel-default">
+
+            <script th:if="${userApplied}">appSent();</script>
+
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">

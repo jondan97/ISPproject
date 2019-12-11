@@ -12,17 +12,22 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
+
+    <script type="text/javascript" th:src="@{/js/popups.js}"></script>
 
 </head>
 <body>
 
     <div th:insert="/navigation :: navbar"></div>
 
+    <h1>CREATE AD</h1>
+
     <div class="container">
         <div class="panel panel-default">
         <div class="panel-body">
-            <form th:action="@{/user/addingAdvert}" method="post">
 
+            <form th:action="@{/user/addingAdvert}" method="post">
                 <div class="form-row">
                     <div class="col-md-12">
                         <div class="md-form form-group">
@@ -67,20 +72,15 @@
                     </div>
                 </div>
 
-                <div class="btnPad">
-                    <button type="submit" name="action" class="btn btn-default" value="Post">Post</button>
-                </div>
-
-                <div class="btnPad">
-                    <button type="submit" name="action" class="btn btn-default" value="Save">Save</button>
-                </div>
-
-                <div class="btnPad">
-                    <button type="button" class="btn btn-default"
-                            th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
-                </div>
-
+                <div class="btnPad"><button type="submit" name="action" value="Post"
+                                            class="btn btn-default">Post</button></div>
+                <div class="btnPad"><button type="submit" name="action" value="Save"
+                                            class="btn btn-default">Save</button></div>
+                <div class="btnPad"><button type="button" class="btn btn-default"
+                                            th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">
+                                            Cancel</button></div>
             </form>
+
         </div>
         </div>
     </div>

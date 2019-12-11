@@ -6,6 +6,7 @@
 <head></head>
 
 <body>
+
     <div th:fragment="navbar">
 
         <style> .inBlock { display: inline-block; } </style>
@@ -31,11 +32,7 @@
 
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                            <li><a th:href="'javascript: document.logoutForm.submit()'">Logout</a>
-                                <form name="logoutForm" th:action="@{/logout}" method="post">
-                                    <input hidden type="submit" value="Logout"/>
-                                </form>
-                            </li>
+                            <li><a onclick="log_out()" href="#">Logout</a></li>
                         </ul>
 
                     </li>
@@ -48,11 +45,7 @@
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/admin}">Create User</a></li>
                             <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                            <li><a th:href="'javascript: document.logoutForm.submit()'">Logout</a>
-                                <form name="logoutForm" th:action="@{/logout}" method="post">
-                                    <input hidden type="submit" value="Logout"/>
-                                </form>
-                            </li>
+                            <li><a onclick="log_out()" href="#">Logout</a></li>
                         </ul>
 
                     </li>
@@ -63,6 +56,10 @@
                 </ul>
             </div>
         </nav>
+
+        <form th:action="@{/logout}" method="post">
+            <button hidden type="submit" id="logout" value="Logout"></button>
+        </form>
 
     </div>
 

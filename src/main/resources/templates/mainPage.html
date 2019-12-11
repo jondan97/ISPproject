@@ -24,8 +24,13 @@
 
     <div th:insert="/navigation :: navbar"></div>
 
-    <div class="container-fluid">
+    <h1>ADVERTS</h1>
+
+    <div class="container">
         <div class="panel panel-default">
+
+            <script th:if="${userContacted}">infoSent();</script>
+
             <div class="row-fluid">
                 <div class="col">
                     <div class="input-group" style="width: 200px">
@@ -63,6 +68,7 @@
                 </div>
                 </tbody>
             </table>
+
         </div>
     </div>
 
