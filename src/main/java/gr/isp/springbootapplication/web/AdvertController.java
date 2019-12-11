@@ -121,6 +121,7 @@ public class AdvertController {
             ad.setUser(u);
 
             advertRepository.save(ad);
+            redir.addFlashAttribute("notificationMessage", true);
             redir.addFlashAttribute("advertCreated", true);
             return "redirect:/user/myAdverts";
         } else {
@@ -166,6 +167,7 @@ public class AdvertController {
             redir.addFlashAttribute("idError", true);
         }
         if (idError) {
+            redir.addFlashAttribute("notificationMessage", true);
             redir.addFlashAttribute("advertProblem", true);
             return "redirect:/user/myAdverts";
         }
@@ -174,6 +176,7 @@ public class AdvertController {
             if (advert.getUser().getId() == SessionUserService.getSessionUser().getId()) {
                 if (action.equals("Delete")) {
                     advertRepository.deleteById(idLong);
+                    redir.addFlashAttribute("notificationMessage", true);
                     redir.addFlashAttribute("advertDeleted", true);
                     return "redirect:/user/myAdverts";
                 } else if (action.equals("Update")) {
@@ -223,6 +226,7 @@ public class AdvertController {
             redir.addFlashAttribute("idError", true);
         }
         if (idError) {
+            redir.addFlashAttribute("notificationMessage", true);
             redir.addFlashAttribute("advertProblem", true);
             return "redirect:/user/myAdverts";
         } else {
@@ -230,6 +234,7 @@ public class AdvertController {
             Advert advertBefore = advertRepository.findFirstById(idLong);
 
             if (advertBefore == null || advertBefore.getStatus().equals("Expired") || !(status.equals("Visible") || status.equals("Invisible") || status.equals("Draft"))) {
+                redir.addFlashAttribute("notificationMessage", true);
                 redir.addFlashAttribute("advertProblem", true);
                 return "redirect:/user/myAdverts";
             } else if (advertBefore.getUser().getId() == SessionUserService.getSessionUser().getId()) {
@@ -275,6 +280,7 @@ public class AdvertController {
                         advertAfter.setUser(advertBefore.getUser());
                         advertAfter.setTimePosted(advertBefore.getTimePosted());
                         advertRepository.save(advertAfter);
+                        redir.addFlashAttribute("notificationMessage", true);
                         redir.addFlashAttribute("advertEdited", true);
                         return "redirect:/user/myAdverts";
                     } else {
@@ -296,6 +302,7 @@ public class AdvertController {
                     }
                 }
             } else {
+                redir.addFlashAttribute("notificationMessage", true);
                 redir.addFlashAttribute("advertProblem", true);
                 return "redirect:/user/myAdverts";
             }
