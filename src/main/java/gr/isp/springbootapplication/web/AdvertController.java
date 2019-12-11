@@ -124,7 +124,6 @@ public class AdvertController {
 
             advertRepository.save(ad);
             redir.addFlashAttribute("notificationMessage", true);
-            redir.addFlashAttribute("advertCreated", true);
             return "redirect:/user/myAdverts";
         } else {
             if (title.isEmpty()) {

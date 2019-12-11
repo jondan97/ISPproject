@@ -43,8 +43,23 @@
     <div class="container">
         <div class="panel panel-default">
 
-            <script th:if="${advertPosted}">adPosted();</script>
-            <script th:if="${advertDrafted}">adDrafted();</script>
+            <!--<script th:if="${advertPosted}">adPosted();</script>
+            <script th:if="${advertDrafted}">adDrafted();</script>-->
+
+            <div th:switch="${notificationMessage}">
+                <div th:case="null"></div>
+
+                <script th:case="${advertPosted}">adPosted();</script>
+
+                <script th:case="${advertDrafted}">adDrafted();</script>
+
+                <script th:case="${advertEdited}">adEdited();</script>
+
+                <!-- john the back end guy would cry if this wasnt used boohoo :'( -->
+                <script th:case="${advertDeleted}">adDeleted();</script>
+
+                <script th:case="${advertProblem}">adProblem();</script>
+            </div>
 
             <div class="row-fluid">
                 <div class="col-sm">

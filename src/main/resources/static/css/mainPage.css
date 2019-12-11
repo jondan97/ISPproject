@@ -41,4 +41,10 @@ h1 {
     min-width: 50px;
 }
 
+#body {
+    word-wrap: break-word;
+    white-space: pre-line;
+    white-space: pre-wrap;
+}
+
 .alignRight { text-align: right; }

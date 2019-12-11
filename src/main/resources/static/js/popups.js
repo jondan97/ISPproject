@@ -2,6 +2,7 @@ function userCreated() {
     $.alert({
         title: 'User created',
         content: null,
+        containerFluid: true,
         backgroundDismiss: true
     });
 }
@@ -16,15 +17,43 @@ function userExists() {
 function adPosted() {
     $.alert({
         title: 'Advert posted',
+        content: 'Your advert is now live!',
+        containerFluid: true,
+        backgroundDismiss: true
+    });
+}
+
+function adDrafted() {
+    $.alert({
+        title: 'Advert saved as draft',
         content: null,
         containerFluid: true,
         backgroundDismiss: true
     });
 }
-function adDrafted() {
+
+function adEdited() {
     $.alert({
-        title: 'Advert saved as draft',
+        title: 'Advert edited',
         content: null,
+        containerFluid: true,
+        backgroundDismiss: true
+    });
+}
+
+function adDeleted() {
+    $.alert({
+        title: 'Advert deleted',
+        content: null,
+        containerFluid: true,
+        backgroundDismiss: true
+    });
+}
+
+function adProblem(){
+    $.alert({
+        title: 'Error!',
+        content: 'There was an issue with your action',
         containerFluid: true,
         backgroundDismiss: true
     });
@@ -54,7 +83,7 @@ function delet(id) {
     $.confirm({
         containerFluid: true,
         title: 'Are you sure you want to delete?',
-        content: null,
+        content: 'This action cannot be undone',
         buttons: {
             no: function() {
                 //close
