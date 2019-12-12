@@ -1,12 +1,3 @@
-function userCreated() {
-    $.alert({
-        title: 'User created',
-        content: null,
-        containerFluid: true,
-        backgroundDismiss: true
-    });
-}
-
 function userExists() {
     $.alert({
         title: 'User already exists',
@@ -35,15 +26,6 @@ function adDrafted() {
 function adEdited() {
     $.alert({
         title: 'Advert edited',
-        content: null,
-        containerFluid: true,
-        backgroundDismiss: true
-    });
-}
-
-function adDeleted() {
-    $.alert({
-        title: 'Advert deleted',
         content: null,
         containerFluid: true,
         backgroundDismiss: true

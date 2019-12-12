@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/popupsDIY.css}"/>
 
     <style> @media (min-width: 584px) { .container { width: 584px; } } </style>
     <script>
@@ -31,6 +32,7 @@
 
     <script type="text/javascript" th:src="@{/js/searching.js}"></script>
     <script type="text/javascript" th:src="@{/js/popups.js}"></script>
+    <script type="text/javascript" th:src="@{/js/popupsDIY.js}"></script>
 
 </head>
 
@@ -40,26 +42,31 @@
 
     <h1>MY ADVERTS</h1>
 
+    <!-- DIY ALERT SECTION-->
+    <div class="notifierBox" style="background-color: #f44336">
+        <div class="notifier"></div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+
+    <div th:switch="${notificationMessage}">
+        <div th:case="null"></div>
+
+        <script th:case="${advertPosted}">adPosted();</script>
+
+        <script th:case="${advertDrafted}">adDrafted();</script>
+
+        <script th:case="${advertEdited}">adEdited();</script>
+
+        <script th:case="${advertDeleted}">
+            $(document).ready(custAlert("Advert deleted"));
+        </script>
+
+        <script th:case="${advertProblem}">adProblem();</script>
+    </div>
+    <!-- DIY ALERT SECTION -->
+
     <div class="container">
         <div class="panel panel-default">
-
-            <!--<script th:if="${advertPosted}">adPosted();</script>
-            <script th:if="${advertDrafted}">adDrafted();</script>-->
-
-            <div th:switch="${notificationMessage}">
-                <div th:case="null"></div>
-
-                <script th:case="${advertPosted}">adPosted();</script>
-
-                <script th:case="${advertDrafted}">adDrafted();</script>
-
-                <script th:case="${advertEdited}">adEdited();</script>
-
-                <!-- john the back end guy would cry if this wasnt used boohoo :'( -->
-                <script th:case="${advertDeleted}">adDeleted();</script>
-
-                <script th:case="${advertProblem}">adProblem();</script>
-            </div>
 
             <div class="row-fluid">
                 <div class="col-sm">

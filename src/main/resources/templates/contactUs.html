@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/popupsDIY.css}"/>
 
     <style>
         p {
@@ -31,6 +32,17 @@
     <div th:insert="/navigation :: navbar"></div>
 
     <h1>CONTACT</h1>
+
+    <!-- DIY ALERT SECTION-->
+    <div class="notifierBox" style="background-color: forestgreen">
+        <div class="notifier"></div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+
+    <script th:if="${userContacted}">
+        $(document).ready(custAlert("Contact info sent"));
+    </script>
+    <!-- DIY ALERT SECTION -->
 
     <div class="container" style="width: 300px;">
         <div class="panel panel-default">

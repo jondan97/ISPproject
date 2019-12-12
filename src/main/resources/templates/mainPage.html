@@ -18,9 +18,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/popupsDIY.css}"/>
 
     <script type="text/javascript" th:src="@{/js/searching.js}"></script>
     <script type="text/javascript" th:src="@{/js/popups.js}"></script>
+    <script type="text/javascript" th:src="@{/js/popupsDIY.js}"></script>
 
 </head>
 
@@ -30,11 +32,19 @@
 
     <h1>ADVERTS</h1>
 
+    <!-- DIY ALERT SECTION-->
+    <div class="notifierBox" style="background-color: forestgreen">
+        <div class="notifier"></div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
+
+    <script th:if="${userContacted}">
+        $(document).ready(custAlert("Contact info sent"));
+    </script>
+    <!-- DIY ALERT SECTION -->
+
     <div class="container">
         <div class="panel panel-default">
-
-            <script th:if="${userContacted}">infoSent();</script>
-
             <div class="row-fluid">
                 <div class="col">
                     <div class="input-group" style="width: 200px">
