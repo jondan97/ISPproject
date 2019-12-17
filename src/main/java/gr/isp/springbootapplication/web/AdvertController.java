@@ -1,6 +1,7 @@
 package gr.isp.springbootapplication.web;
 
 import gr.isp.springbootapplication.entity.Advert;
+import gr.isp.springbootapplication.entity.Advert_Visible_History;
 import gr.isp.springbootapplication.entity.User;
 import gr.isp.springbootapplication.repository.AdvertRepository;
 import gr.isp.springbootapplication.service.SessionUserService;
@@ -17,7 +18,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class AdvertController {
@@ -36,16 +39,27 @@ public class AdvertController {
         List<Advert> advertArrayExpired = new ArrayList<Advert>();
 
         for (Advert ad: adverts) {
+            Long daysPosted = (long) 0;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime nowTooLong = LocalDateTime.now();
             String nowStr = nowTooLong.format(formatter);
             LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
-            Long daysPosted = Duration.between(ad.getTimePosted(), now).toDays();
+            for (Advert_Visible_History record : ad.getDates()) {
+                if (record.getTimeUnposted() != null){
+                    daysPosted += Duration.between(record.getTimePosted(), record.getTimeUnposted()).toDays();
+                }
+                else {
+                    daysPosted += Duration.between(record.getTimePosted(), now).toDays();
+                }
+            }
+
             if (daysPosted >= 30) {
                 ad.setStatus("Expired");
                 advertRepository.save(ad);
             }
             ad.setDaysPosted(daysPosted);
+            Long daysCreated = Duration.between(ad.getTimeCreated(), now).toDays();
+            ad.setDaysCreated(daysCreated);
             if (ad.getStatus().equals("Visible")){
                 advertArrayVisible.add(ad);
             }
@@ -103,21 +117,29 @@ public class AdvertController {
             ad.setIndustry(industry);
             if (salaryInt == null) salaryInt = 0;
             ad.setSalary(salaryInt);
-            if (action.equals("Post")){
-                ad.setStatus("Visible");
-                redir.addFlashAttribute("advertPosted", true);
-            }
-            else if (action.equals("Save")){
-                ad.setStatus("Draft");
-                redir.addFlashAttribute("advertDrafted", true);
-            }
+
 
             //LocalDateTime.now() creates an object that is too long for SQL, so we have to cut the last parts (the nanoseconds) in order to not insert corrupt date to the DB, besides we don't need that much of a precision
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime nowTooLong = LocalDateTime.now();
             String nowStr = nowTooLong.format(formatter);
             LocalDateTime timePosted = LocalDateTime.parse(nowStr, formatter);
-            ad.setTimePosted(timePosted);
+            ad.setTimeCreated(timePosted);
+
+            if (action.equals("Post")){
+                ad.setStatus("Visible");
+                Advert_Visible_History startingDateOnly = new Advert_Visible_History();
+                startingDateOnly.setTimePosted(timePosted);
+                startingDateOnly.setAdvert(ad);
+                Set<Advert_Visible_History> dates = new HashSet<>();
+                dates.add(startingDateOnly);
+                ad.setDates(dates);
+                redir.addFlashAttribute("advertPosted", true);
+            }
+            else if (action.equals("Save")){
+                ad.setStatus("Draft");
+                redir.addFlashAttribute("advertDrafted", true);
+            }
 
             User u = new User(SessionUserService.getSessionUser().getId());
             ad.setUser(u);
@@ -181,12 +203,27 @@ public class AdvertController {
                     redir.addFlashAttribute("advertDeleted", true);
                     return "redirect:/user/myAdverts";
                 } else if (action.equals("Update")) {
+                    Long daysPosted = (long) 0;
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     LocalDateTime nowTooLong = LocalDateTime.now();
                     String nowStr = nowTooLong.format(formatter);
                     LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
-                    Long daysPosted = Duration.between(advert.getTimePosted(), now).toDays();
+                    for (Advert_Visible_History record : advert.getDates()) {
+                        if (record.getTimeUnposted() != null){
+                            daysPosted += Duration.between(record.getTimePosted(), record.getTimeUnposted()).toDays();
+                        }
+                        else {
+                            daysPosted += Duration.between(record.getTimePosted(), now).toDays();
+                        }
+                    }
+
+                    if (daysPosted >= 30) {
+                        advert.setStatus("Expired");
+                        advertRepository.save(advert);
+                    }
                     advert.setDaysPosted(daysPosted);
+                    Long daysCreated = Duration.between(advert.getTimeCreated(), now).toDays();
+                    advert.setDaysCreated(daysCreated);
                     model.addAttribute("advert", advert);
                     return "editAdvert";
                 }
@@ -251,7 +288,6 @@ public class AdvertController {
                         salaryError = true;
                         redir.addFlashAttribute("salaryError", salaryError);
                     }
-
                     if (!(title.isEmpty() || body.isEmpty() || salaryError)) {
                         Advert advertAfter = new Advert();
                         advertAfter.setId(idLong);
@@ -279,7 +315,36 @@ public class AdvertController {
 //                        advertAfter.setTimePosted(timePosted);
 //                    }
                         advertAfter.setUser(advertBefore.getUser());
-                        advertAfter.setTimePosted(advertBefore.getTimePosted());
+                        advertAfter.setTimeCreated(advertBefore.getTimeCreated());
+                        if (status.equals("Visible")){
+                            //LocalDateTime.now() creates an object that is too long for SQL, so we have to cut the last parts (the nanoseconds) in order to not insert corrupt date to the DB, besides we don't need that much of a precision
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                            LocalDateTime nowTooLong = LocalDateTime.now();
+                            String nowStr = nowTooLong.format(formatter);
+                            Advert_Visible_History startingDateOnly = new Advert_Visible_History();
+                            LocalDateTime timeEdited = LocalDateTime.parse(nowStr, formatter);
+                            startingDateOnly.setTimePosted(timeEdited);
+                            startingDateOnly.setAdvert(advertAfter);
+                            advertAfter.setDates(advertBefore.getDates());
+                            advertAfter.getDates().add(startingDateOnly);
+                        }
+                        else if (status.equals("Invisible") || status.equals("Draft")){
+                            advertAfter.setDates(advertBefore.getDates());
+                            for (Advert_Visible_History lastRecord : advertAfter.getDates()) {
+                                if (lastRecord.getTimeUnposted() == null){
+                                    //LocalDateTime.now() creates an object that is too long for SQL, so we have to cut the last parts (the nanoseconds) in order to not insert corrupt date to the DB, besides we don't need that much of a precision
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                    LocalDateTime nowTooLong = LocalDateTime.now();
+                                    String nowStr = nowTooLong.format(formatter);
+                                    Advert_Visible_History startingDateOnly = new Advert_Visible_History();
+                                    LocalDateTime timeEdited = LocalDateTime.parse(nowStr, formatter);
+                                    lastRecord.setTimeUnposted(timeEdited);
+                                    advertAfter.getDates().add(lastRecord);
+                                    break;
+                                }
+                            }
+                        }
+
                         advertRepository.save(advertAfter);
                         redir.addFlashAttribute("notificationMessage", true);
                         redir.addFlashAttribute("advertEdited", true);
@@ -292,12 +357,22 @@ public class AdvertController {
                             redir.addFlashAttribute("bodyError", true);
                         }
                         //only goes in here when title or body is empty, redirects to GET: editAdvert
+                        Long daysPosted = (long) 0;
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         LocalDateTime nowTooLong = LocalDateTime.now();
                         String nowStr = nowTooLong.format(formatter);
                         LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
-                        Long daysPosted = Duration.between(advertBefore.getTimePosted(), now).toDays();
+                        for (Advert_Visible_History record : advertBefore.getDates()) {
+                            if (record.getTimeUnposted() != null){
+                                daysPosted += Duration.between(record.getTimePosted(), record.getTimeUnposted()).toDays();
+                            }
+                            else {
+                                daysPosted += Duration.between(record.getTimePosted(), now).toDays();
+                            }
+                        }
                         advertBefore.setDaysPosted(daysPosted);
+                        Long daysCreated = Duration.between(advertBefore.getTimeCreated(), now).toDays();
+                        advertBefore.setDaysCreated(daysCreated);
                         redir.addFlashAttribute("advert", advertBefore);
                         return "redirect:/user/editAdvert";
                     }

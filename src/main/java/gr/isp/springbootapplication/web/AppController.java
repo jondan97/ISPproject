@@ -1,6 +1,7 @@
 package gr.isp.springbootapplication.web;
 
 import gr.isp.springbootapplication.entity.Advert;
+import gr.isp.springbootapplication.entity.Advert_Visible_History;
 import gr.isp.springbootapplication.repository.AdvertRepository;
 import gr.isp.springbootapplication.service.EmailService;
 import gr.isp.springbootapplication.service.SessionUserService;
@@ -51,17 +52,28 @@ public class AppController {
         Iterable<Advert> adverts = advertRepository.findByStatus("Visible");
         List<Advert> advertArray = new ArrayList<Advert>();
         for (Advert ad: adverts) {
+            Long daysPosted = (long) 0;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime nowTooLong = LocalDateTime.now();
             String nowStr = nowTooLong.format(formatter);
             LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
-            Long daysPosted = Duration.between(ad.getTimePosted(), now).toDays();
-            if(daysPosted >= 30){
+            for (Advert_Visible_History record : ad.getDates()) {
+                if (record.getTimeUnposted() != null){
+                    daysPosted += Duration.between(record.getTimePosted(), record.getTimeUnposted()).toDays();
+                }
+                else {
+                    daysPosted += Duration.between(record.getTimePosted(), now).toDays();
+                }
+            }
+
+            if (daysPosted >= 30) {
                 ad.setStatus("Expired");
                 advertRepository.save(ad);
             }
             else {
                 ad.setDaysPosted(daysPosted);
+                Long daysCreated = Duration.between(ad.getTimeCreated(), now).toDays();
+                ad.setDaysCreated(daysCreated);
                 advertArray.add(ad);
             }
         }
@@ -93,18 +105,27 @@ public class AppController {
                 return "redirect:/error";
             }
             else {
+                Long daysPosted = (long) 0;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime nowTooLong = LocalDateTime.now();
                 String nowStr = nowTooLong.format(formatter);
                 LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
-                Long daysPosted = Duration.between(advert.getTimePosted(), now).toDays();
-                if(daysPosted >= 30){
+                for (Advert_Visible_History record : advert.getDates()) {
+                    if (record.getTimeUnposted() != null){
+                        daysPosted += Duration.between(record.getTimePosted(), record.getTimeUnposted()).toDays();
+                    }
+                    else {
+                        daysPosted += Duration.between(record.getTimePosted(), now).toDays();
+                    }
+                }
+
+                if (daysPosted >= 30) {
                     advert.setStatus("Expired");
                     advertRepository.save(advert);
-                 }
+                }
                 advert.setDaysPosted(daysPosted);
-
-
+                Long daysCreated = Duration.between(advert.getTimeCreated(), now).toDays();
+                advert.setDaysCreated(daysCreated);
                 model.addAttribute("advert", advert);
                 return "viewAdvert";
             }

@@ -3,12 +3,13 @@ package gr.isp.springbootapplication.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Advert {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
@@ -28,14 +29,20 @@ public class Advert {
     private String status;
 
     @Column
-    private LocalDateTime timePosted;
+    private LocalDateTime timeCreated;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy="advert", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Advert_Visible_History> dates;
 
     @Transient
     private Long daysPosted;
+
+    @Transient
+    private Long daysCreated;
 
     public Long getId() {
         return id;
@@ -85,12 +92,12 @@ public class Advert {
         this.status = status;
     }
 
-    public LocalDateTime getTimePosted() {
-        return timePosted;
+    public LocalDateTime getTimeCreated() {
+        return timeCreated;
     }
 
-    public void setTimePosted(LocalDateTime timePosted) {
-        this.timePosted = timePosted;
+    public void setTimeCreated(LocalDateTime timeCreated) {
+        this.timeCreated = timeCreated;
     }
 
     public User getUser() {
@@ -107,6 +114,22 @@ public class Advert {
 
     public void setDaysPosted(Long daysPosted) {
         this.daysPosted = daysPosted;
+    }
+
+    public Long getDaysCreated() {
+        return daysCreated;
+    }
+
+    public void setDaysCreated(Long daysCreated) {
+        this.daysCreated = daysCreated;
+    }
+
+    public Set<Advert_Visible_History> getDates() {
+        return dates;
+    }
+
+    public void setDates(Set<Advert_Visible_History> dates) {
+        this.dates = dates;
     }
 
     @Override
