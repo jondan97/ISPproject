@@ -4,7 +4,8 @@ function custAlert(text) {
     var increment = 1/10;
 
     /* animation function */
-    $('.notifierBox').html(text).fadeIn();
+    $('.notifier').html(text);
+    $('.notifierBox').fadeIn();
     var id = setInterval(frame, 50);
     function frame() {
         if (topVar === 0.8 || topVar > 0.8) {

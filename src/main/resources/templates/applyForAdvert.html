@@ -24,7 +24,7 @@
 
     <div th:insert="/navigation :: navbar"></div>
 
-    <h1>APPLY</h1>
+    <h1>Apply</h1>
 
     <div class="container">
         <div class="panel panel-default">
@@ -91,13 +91,14 @@
                             <label class="btn btn-default" id="uploadCV" for="cv">Upload CV</label>
                         </div>
 
-                        <div class="form-group col-md-10" id="cvErrorStyle" th:text="${cvError} ?
-                             ' File uploaded must be a PDF' : ' Please upload a PDF of your CV'">
+                        <div class="form-group col-md-10" id="cvErrorStyle">
+                            Please upload a PDF of your CV
+                            <div class="errMsg" th:if="${cvError}">File uploaded must be a PDF</div>
                         </div>
                     </div>
 
                     <div class="btnPad">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" id="sub" class="btn btn-default">Submit</button>
                     </div>
 
                     <div class="btnPad">
