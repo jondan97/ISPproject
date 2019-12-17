@@ -13,8 +13,14 @@ $(document).ready(function(){
     otherInput.type = "file";
     otherInput.accept = "application/pdf";
     otherInput.multiple = false;
+
+    //document.body.appendChild(otherInput);
+    //otherInput.setAttribute("style", "opacity: 0; position: absolute; pointer-events: none;");
+
     otherInput.addEventListener("change", function () {
         input.files = otherInput.files;
+        console.log(otherInput.files);
+        console.log(input.files);
     });
 
     label.on("click",function (e) {
@@ -23,7 +29,9 @@ $(document).ready(function(){
     });
 
     form.on("submit", function () {
-        if (!form.checkValidity()) {
+        console.log(form[0].checkValidity());
+
+        if (!form[0].checkValidity()) {
             setTimeout(function () {
                 input.files = otherInput.files;
             }, 1500);

@@ -42,16 +42,19 @@
                                 <label for="password">Password</label>
                                 <input type="password" name="password" id="password" class="form-control"
                                        th:value="${password}">
+
+                                <div class="errMsg" th:if="${param.error}">Invalid email or password</div>
+                                <div class="errMsg" th:if="${param.logout}">You have been logged out</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <!--<div class="form-row">
                         <div class="col-md-12">
                             <div class="errMsg" th:if="${param.error}">Invalid email or password</div>
                             <div class="errMsg" th:if="${param.logout}">You have been logged out</div>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="btnPad">
                         <button type="submit" class="btn btn-default">Log In</button>
@@ -61,6 +64,11 @@
                         <button type="button" class="btn btn-default"
                                 th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
                     </div>
+
+                    <!--<div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.history.back(-1);return false;'">Back</button>
+                    </div>-->
                 </form>
             </div>
         </div>
