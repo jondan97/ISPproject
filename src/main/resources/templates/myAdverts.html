@@ -91,7 +91,13 @@
 
             <table class="table table-condensed">
                 <!-- display visible ads -->
-                <thead><tr><th colspan="4">Visible</th></tr></thead>
+                <thead>
+                <tr>
+                    <th colspan="1">Visible</th>
+                    <th colspan="3">Days Posted</th>
+                </tr>
+                </thead>
+
                 <tbody>
                     <div th:if="${advertArrayVisible.isEmpty()}">
                         <tr>
@@ -106,7 +112,7 @@
 
                             <td class="line2" th:text="${adVis.getIndustry()}"></td>
 
-                            <td class="alignRight" th:text="${adVis.getDaysPosted() != 0} ?
+                            <td class="alignment" th:text="${adVis.getDaysPosted() != 0} ?
                                              ${adVis.getDaysPosted()} + ' days ago' : 'Today'"></td>
 
                             <form th:action="@{/user/editAdvert}" method="post">
@@ -134,7 +140,13 @@
                 </tbody>
 
                 <!-- display invisible ads -->
-                <thead><tr><th colspan="4">Invisible</th></tr></thead>
+                <thead>
+                <tr>
+                    <th colspan="1">Invisible</th>
+                    <th colspan="3">Days Posted</th>
+                </tr>
+                </thead>
+
                 <tbody>
 
                     <div th:if="${advertArrayInvisible.isEmpty()}">
@@ -150,8 +162,7 @@
 
                             <td class="line2" th:text="${adInvis.getIndustry()}"></td>
 
-                            <td class="alignRight" th:text="${adInvis.getDaysPosted() != 0} ?
-                                             ${adInvis.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                            <td class="alignment" th:text="'Paused'"></td>
 
                             <form th:action="@{/user/editAdvert}" method="post">
                                 <button hidden type="submit" name="action" value="Update"
@@ -177,7 +188,13 @@
                 </tbody>
 
                 <!-- display draft ads -->
-                <thead><tr><th colspan="4">Draft</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th colspan="1">Draft</th>
+                        <th colspan="3">Days Posted</th>
+                    </tr>
+                </thead>
+
                 <tbody>
                     <div th:if="${advertArrayDraft.isEmpty()}">
                         <tr>
@@ -192,8 +209,7 @@
 
                             <td class="line2" th:text="${adDraft.getIndustry()}"></td>
 
-                            <td class="alignRight" th:text="${adDraft.getDaysPosted() != 0} ?
-                                             ${adDraft.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                            <td class="alignment" th:text="'-'"></td>
 
                             <form th:action="@{/user/editAdvert}" method="post">
                                 <button hidden type="submit" name="action" value="Update"
@@ -219,7 +235,13 @@
                 </tbody>
 
                 <!-- display expired ads -->
-                <thead><tr><th colspan="4">Expired</th></tr></thead>
+                <thead>
+                <tr>
+                    <th colspan="1">Expired</th>
+                    <th colspan="3">Days Posted</th>
+                </tr>
+                </thead>
+
                 <tbody>
                     <div th:if="${advertArrayExpired.isEmpty()}">
                         <tr>
@@ -234,8 +256,7 @@
 
                             <td class="line2" th:text="${adExp.getIndustry()}"></td>
 
-                            <td class="alignRight" th:text="${adExp.getDaysPosted() != 0} ?
-                                             ${adExp.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                            <td class="alignment" th:text="${adExp.getDaysPosted()} + ' days'"></td>
 
                             <form th:action="@{/user/editAdvert}" method="post">
                                 <button hidden type="submit" name="action" value="Delete"

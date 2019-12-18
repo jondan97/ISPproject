@@ -1,0 +1,17 @@
+/* include "<div class="logo"><div class="ath">ATH</div><div class="slash">/</div>TECH</div>" in html */
+.logo {
+    display: inline-block;
+    font-size: 40px;
+    font-weight: 800;
+    font-stretch: extra-condensed;
+    color: black;
+}
+
+.ath {
+    display: inline-block;
+    color: #00B9E7;
+}
+.slash {
+    display: inline-block;
+    font-weight: normal;
+}

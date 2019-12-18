@@ -9,12 +9,15 @@
 
     <div th:fragment="navbar">
 
-        <style> .inBlock { display: inline-block; } </style>
+        <style>.inBlock { display: inline-block; }</style>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/athtechLogo.css}"/>
 
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" th:href="@{/}">DreamJob</a>
+                    <a class="navbar-brand" th:href="@{/}">
+                        <div class="logo"><div class="ath">ATH</div><div class="slash">/</div>TECH</div>
+                    </a>
                 </div>
 
                 <ul class="nav navbar-nav">
