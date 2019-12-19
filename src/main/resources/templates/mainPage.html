@@ -58,7 +58,13 @@
             </div>
 
             <table class="table table-condensed">
-                <thead></thead>
+                <thead>
+                    <tr>
+                        <th colspan="2">Job title & Company</th>
+                        <th>Industry</th>
+                        <th>Days Posted</th>
+                    </tr>
+                </thead>
                 <tbody>
 
                 <div th:if="${advertArray.isEmpty()}">
@@ -77,7 +83,7 @@
                                 ${advert.getIndustry()} : 'No Industry'"></td>
 
                         <td th:text="${advert.getDaysPosted() != 0} ?
-                                ${advert.getDaysPosted()} + ' days ago' : 'Today'"></td>
+                                ${advert.getDaysPosted()} + ' days' : 'Today'"></td>
                     </tr>
                 </div>
                 </tbody>

@@ -29,13 +29,23 @@
 
             <form th:action="@{/user/addingAdvert}" method="post">
                 <div class="form-row">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <div class="md-form form-group">
                             <label for="title">Job Title</label>
                             <input type="text" name="title" id="title" class="form-control"
-                                   th:value="${title}">
+                                   th:value="${advert.getTitle()}">
 
                             <div class="errMsg" th:if="${titleError}">Field must not be empty</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="md-form form-group">
+                            <label for="title">Status</label>
+                            <select title="Status will be set by clicking the &quot;Save&quot; or &quot;Post&quot;"
+                                    disabled name="status" class="form-control">
+                                <option selected>None</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -72,13 +82,23 @@
                     </div>
                 </div>
 
-                <div class="btnPad"><button type="submit" name="action" value="Post"
-                                            class="btn btn-default">Post</button></div>
-                <div class="btnPad"><button type="submit" name="action" value="Save"
-                                            class="btn btn-default">Save</button></div>
-                <div class="btnPad"><button type="button" class="btn btn-default"
-                                            th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">
-                                            Cancel</button></div>
+                <div class="btnPad">
+                    <button title="Post your advert on the main page"
+                            type="submit" name="action" value="Post"
+                            class="btn btn-default">Post</button>
+                </div>
+
+                <div class="btnPad">
+                    <button title="Save your advert to post it later"
+                            type="submit" name="action" value="Save"
+                            class="btn btn-default">Save</button>
+                </div>
+
+                <div class="btnPad">
+                    <button type="button" class="btn btn-default"
+                            th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">
+                            Cancel</button>
+                </div>
             </form>
 
         </div>

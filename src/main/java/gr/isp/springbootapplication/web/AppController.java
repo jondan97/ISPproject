@@ -200,7 +200,7 @@ public class AppController {
                             "<h1> Phone Number: " + phone + "</h1>" +
                             "<h1> Contact E-mail: " + email + "</h1><br>" +
                             "CV can be found attached to this e-mail";
-                    //emailService.sendEmailWithAttachement(emailSentTo, emailSubject, emailBody, cv);
+                    emailService.sendEmailWithAttachement(emailSentTo, emailSubject, emailBody, cv);
                     redir.addFlashAttribute("userApplied", true);
                     return "redirect:/view/" + advertApplyingFor.getId();
                 } else {
@@ -250,12 +250,12 @@ public class AppController {
                                ) throws IOException, MessagingException {
 
         if (!(email.isEmpty() || phone.isEmpty())) {
-            String emailSentTo = "jondan97@gmail.com";
+            String emailSentTo = "alextgen@gmail.com";
             String emailSubject = "Credentials Request";
             String emailBody = "Request for credentials by a new user has been received!" +
                     "<h1> Contact E-mail: " + email + "</h1>" +
                     "<h1> Phone Number: " + phone + "</h1>";
-            //emailService.sendEmail(emailSentTo, emailSubject, emailBody);
+            emailService.sendEmail(emailSentTo, emailSubject, emailBody);
             redir.addFlashAttribute("userContacted", true);
             return "redirect:/";
         } else {

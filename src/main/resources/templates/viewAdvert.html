@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="time">Time Posted</label>
+                        <label for="time">Days Posted</label>
                         <p id="time" th:text="${advert.getDaysPosted() != 0} ?
                                 ${advert.getDaysPosted()} + ' days ago' : 'Today'">Time Placeholder</p>
                     </div>
@@ -68,7 +68,31 @@
                     </div>
                 </div>
 
-                <div th:switch="${param.myAdverts}">
+                <div th:switch="${advert.getStatus()}">
+                	<div th:case="*">
+		                <div class="btnPad">
+		                    <button type="button" class="btn btn-default"
+		                            th:onclick="'window.location.href=\'' +
+		                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
+		                        Apply
+		                    </button>
+		                </div>
+		            </div>
+
+		            <div th:case="'Expired'">
+		            	<div class="btnPad">
+		            		<button title="Advert has expired" type="button" class="btn btn-default"
+                                    disabled>Apply</button>
+		            	</div>
+		            </div>
+                </div>
+
+                <div class="btnPad">
+                    <button type="button" class="btn btn-default"
+                            th:onclick="'window.history.back(-1);return false;'">Back</button>
+                </div>
+
+                <!--<div th:switch="${param.myAdverts}">
                     <div th:case="null">
                         <div class="btnPad">
                             <button type="button" class="btn btn-default"
@@ -109,7 +133,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
+
             </div>
         </div>
     </div>

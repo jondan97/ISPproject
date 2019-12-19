@@ -27,8 +27,8 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
-                <form th:action="@{/user/editingAdvert}" method="post">
 
+                <form th:action="@{/user/editingAdvert}" method="post">
                     <div class="form-row">
                         <div class="col-md-10">
                             <div class="md-form form-group">
@@ -59,8 +59,7 @@
                                     </div>
 
                                     <div th:case="'Draft'">
-                                        <select  name="status" class="form-control">
-                                            <option value="Visible">Post</option>
+                                        <select disabled name="status" class="form-control">
                                             <option value="Draft" selected>Draft</option>
                                         </select>
                                     </div>
@@ -105,13 +104,33 @@
                         </div>
                     </div>
 
+                    <!-- WAITING FOR BACK END CHANGES
+                    <div th:if="${advert.getStatus() == 'Draft'}">
+                        <div class="btnPad">
+                            <button title="Your advert will become visible on the main page"
+                                    type="submit" name="action" value="Post"
+                                    class="btn btn-default">Post</button>
+                        </div>
+                    </div>
+
+                    <div th:if="${advert.getstatus() == 'Visible'}">
+                        <div class="btnPad">
+                            <button title="Your advert is already posted" disabled
+                                    type="button" class="btn btn-default">Post</button>
+                        </div>
+                    </div>
+                    WAITING FOR BACK END CHANGES -->
+
                     <div class="btnPad">
-                        <button type="submit" name="action" class="btn btn-default" value="Update">Update</button>
+                        <button title="Save changes"
+                                type="submit" name="action" value="Update"
+                                class="btn btn-default">Save</button>
                     </div>
 
                     <div class="btnPad">
                         <button type="button" class="btn btn-default"
-                                th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                                th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">
+                                Cancel</button>
                     </div>
 
                     <input type="hidden" name="id" th:value="${advert.getId()}">
