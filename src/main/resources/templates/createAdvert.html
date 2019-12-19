@@ -31,9 +31,9 @@
                 <div class="form-row">
                     <div class="col-md-10">
                         <div class="md-form form-group">
-                            <label for="title">Job Title</label>
+                            <label for="title">Job Title*</label>
                             <input type="text" name="title" id="title" class="form-control"
-                                   th:value="${advert.getTitle()}">
+                                   th:value="${title}">
 
                             <div class="errMsg" th:if="${titleError}">Field must not be empty</div>
                         </div>
@@ -53,7 +53,7 @@
                 <div class="form-row">
                     <div class="col-md-12">
                         <div class="md-form form-group">
-                            <label for="body">Job Description</label>
+                            <label for="body">Job Description*</label>
                             <textarea class="form-control" name="body" id="body" rows="5"
                                       style="resize: none" th:text="${body}">
                             </textarea>

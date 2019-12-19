@@ -16,6 +16,15 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
 
+    <script>
+        $(document).ready(function() {
+            $('#post').on("click", function() {
+                $('#status').val("Visible");
+                $('#editForm').submit();
+            });
+        });
+    </script>
+
 </head>
 
 <body>
@@ -28,7 +37,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
 
-                <form th:action="@{/user/editingAdvert}" method="post">
+                <form th:action="@{/user/editingAdvert}" method="post" id="editForm">
                     <div class="form-row">
                         <div class="col-md-10">
                             <div class="md-form form-group">
@@ -45,23 +54,24 @@
                                 <label for="title">Status</label>
                                 <div th:switch="${advert.getStatus()}">
                                     <div th:case="'Visible'">
-                                        <select  name="status" class="form-control">
+                                        <select name="status" class="form-control">
                                             <option value="Visible" selected>Visible</option>
                                             <option value="Invisible">Invisible</option>
                                         </select>
                                     </div>
 
                                     <div th:case="'Invisible'">
-                                        <select  name="status" class="form-control">
+                                        <select name="status" class="form-control">
                                             <option value="Visible">Visible</option>
                                             <option value="Invisible" selected>Invisible</option>
                                         </select>
                                     </div>
 
                                     <div th:case="'Draft'">
-                                        <select disabled name="status" class="form-control">
-                                            <option value="Draft" selected>Draft</option>
+                                        <select disabled class="form-control">
+                                            <option>Draft</option>
                                         </select>
+                                        <input hidden id="status" name="status" value="Draft">
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +106,7 @@
                             <div class="md-form form-group">
                                 <label for="salary">Salary</label>
                                 <input class="form-control" type="number" name="salary" id="salary"
-                                       th:value="${advert.getSalary() != null} ?
+                                       th:value="${advert.getSalary() != 0} ?
                                                  ${advert.getSalary()} : 'No Salary'">
 
                                 <div th:if="${salaryError}">Salary must be a number.</div>
@@ -104,27 +114,29 @@
                         </div>
                     </div>
 
-                    <!-- WAITING FOR BACK END CHANGES
-                    <div th:if="${advert.getStatus() == 'Draft'}">
-                        <div class="btnPad">
-                            <button title="Your advert will become visible on the main page"
-                                    type="submit" name="action" value="Post"
-                                    class="btn btn-default">Post</button>
+                    <!-- WAITING FOR BACK END CHANGES -->
+                    <div th:switch="${advert.getStatus()}">
+                        <div th:case="'Draft'">
+                            <div class="btnPad">
+                                <button title="Your advert will become visible on the main page"
+                                        id="post" name="action" value="Update"
+                                        class="btn btn-default">Post</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div th:if="${advert.getstatus() == 'Visible'}">
-                        <div class="btnPad">
-                            <button title="Your advert is already posted" disabled
-                                    type="button" class="btn btn-default">Post</button>
+                        <div th:case="*">
+                            <div class="btnPad">
+                                <button title="Your advert is already posted" disabled
+                                        class="btn btn-default">Post</button>
+                            </div>
                         </div>
                     </div>
-                    WAITING FOR BACK END CHANGES -->
+                    <!-- WAITING FOR BACK END CHANGES -->
 
                     <div class="btnPad">
                         <button title="Save changes"
                                 type="submit" name="action" value="Update"
-                                class="btn btn-default">Save</button>
+                                class="btn btn-default">Update</button>
                     </div>
 
                     <div class="btnPad">

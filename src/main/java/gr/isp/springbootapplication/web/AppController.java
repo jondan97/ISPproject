@@ -246,16 +246,20 @@ public class AppController {
     @PostMapping({"/contactUs/contactingUs"})
     public String contactingUs(RedirectAttributes redir,
                                @RequestParam String email,
+                               @RequestParam String uCompanyName,
                                @RequestParam String phone
                                ) throws IOException, MessagingException {
 
-        if (!(email.isEmpty() || phone.isEmpty())) {
+        if (!(email.isEmpty() || uCompanyName.isEmpty() || phone.isEmpty())) {
             String emailSentTo = "alextgen@gmail.com";
             String emailSubject = "Credentials Request";
             String emailBody = "Request for credentials by a new user has been received!" +
                     "<h1> Contact E-mail: " + email + "</h1>" +
+                    "<h1> Company Name" + uCompanyName + "</h1>" +
                     "<h1> Phone Number: " + phone + "</h1>";
+            System.out.println("yeet");
             emailService.sendEmail(emailSentTo, emailSubject, emailBody);
+            System.out.println("bruh");
             redir.addFlashAttribute("userContacted", true);
             return "redirect:/";
         } else {
@@ -264,11 +268,16 @@ public class AppController {
                 redir.addFlashAttribute("emailError", true);
             }
 
+            if(uCompanyName.isEmpty()){
+                redir.addFlashAttribute("uCompanyNameError", true);
+            }
+
             if(phone.isEmpty()){
                 redir.addFlashAttribute("phoneError", true);
             }
 
             redir.addFlashAttribute("email", email);
+            redir.addFlashAttribute("uCompanyName", uCompanyName);
             redir.addFlashAttribute("phone", phone);
             return "redirect:/contactUs";
 

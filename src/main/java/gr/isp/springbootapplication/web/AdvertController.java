@@ -253,6 +253,15 @@ public class AdvertController {
     ) {
         // @RequestParam means it is a parameter from the GET or POST request
 
+        System.out.println(action);
+        System.out.println(id);
+        System.out.println(title);
+        System.out.println(body);
+        System.out.println(salary);
+        System.out.println(industry);
+        System.out.println(status);
+
+
         boolean idError = false;
         long idLong = 0;
         try {

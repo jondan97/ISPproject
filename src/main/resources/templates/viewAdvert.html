@@ -64,27 +64,26 @@
 
                     <div class="col-md-6">
                         <label for="salary">Salary</label>
-                        <p id="salary">[[${advert.getSalary()}]]</p>
+                        <p id="salary" th:text="${advert.getSalary() == 0} ?
+                                       'No Salary' : '&euro;' + ${advert.getSalary()}"></p>
                     </div>
                 </div>
 
-                <div th:switch="${advert.getStatus()}">
-                	<div th:case="*">
-		                <div class="btnPad">
-		                    <button type="button" class="btn btn-default"
-		                            th:onclick="'window.location.href=\'' +
-		                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
-		                        Apply
-		                    </button>
-		                </div>
-		            </div>
+                <div th:unless="${advert.getStatus() == 'Expired'}">
+                    <div class="btnPad">
+                        <button type="button" class="btn btn-default"
+                                th:onclick="'window.location.href=\'' +
+                                        @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
+                            Apply
+                        </button>
+                    </div>
+                </div>
 
-		            <div th:case="'Expired'">
-		            	<div class="btnPad">
-		            		<button title="Advert has expired" type="button" class="btn btn-default"
-                                    disabled>Apply</button>
-		            	</div>
-		            </div>
+                <div th:if="${advert.getStatus() == 'Expired'}">
+                    <div class="btnPad">
+                        <button title="Advert has expired" type="button" class="btn btn-default"
+                                disabled>Apply</button>
+                    </div>
                 </div>
 
                 <div class="btnPad">
