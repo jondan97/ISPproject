@@ -50,10 +50,10 @@ function appSent() {
     });
 }
 
-function infoSent() {
+function passChange() {
     $.alert({
-        title: 'Information sent',
-        content: 'The administrator has been contacted',
+        title: 'Password changed',
+        content: null,
         containerFluid: true,
         backgroundDismiss: true
     });

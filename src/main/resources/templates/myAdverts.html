@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 
 <head>
 
@@ -61,6 +62,8 @@
             $(document).ready(custAlert("Advert deleted"));
         </script>
 
+        <script th:case="${passwordChanged}">passChange();</script>
+
         <script th:case="${advertProblem}">adProblem();</script>
     </div>
     <!-- DIY ALERT SECTION -->
@@ -72,8 +75,8 @@
                 <div class="col-sm">
                     <div id="postButton">
                         <button type="button" class="btn btn-default"
-                                th:onclick="'window.location.href=\'' + @{/user/createAdvert} + '\''">
-                            Create Post</button>
+                                th:onclick="'window.location.href=\'' +
+                                @{/user/createAdvert} + '\''">Create Post</button>
                     </div>
                 </div>
 

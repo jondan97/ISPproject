@@ -26,8 +26,6 @@
                     <li><a th:href="@{/}">Home</a></li>
 
                     <li><a th:href="@{/contactUs}">Contact Us</a></li>
-
-                    <li><a th:href="@{/user/passwordChange}">Placeholder</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right" th:switch="${role}">
@@ -39,6 +37,8 @@
 
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                            <li class="divider">&nbsp;</li>
+                            <li><a th:href="@{/user/passwordChange}">Change Password</a></li>
                             <li><a onclick="log_out()" href="#">Logout</a></li>
                         </ul>
 
@@ -50,8 +50,9 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{/admin}">Create User</a></li>
                             <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                            <li class="divider">&nbsp;</li>
+                            <li><a th:href="@{/admin}">Create User</a></li>
                             <li><a onclick="log_out()" href="#">Logout</a></li>
                         </ul>
 

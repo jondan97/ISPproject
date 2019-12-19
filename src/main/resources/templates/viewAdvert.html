@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+
 <head>
     <title>View Advert</title>
 
@@ -86,19 +88,17 @@
                     </div>
                 </div>
 
-                <div class="btnPad">
+                <!--<div class="btnPad">
                     <button type="button" class="btn btn-default"
                             th:onclick="'window.history.back(-1);return false;'">Back</button>
-                </div>
+                </div>-->
 
-                <!--<div th:switch="${param.myAdverts}">
+                <div th:switch="${param.myAdverts}">
                     <div th:case="null">
                         <div class="btnPad">
                             <button type="button" class="btn btn-default"
                                     th:onclick="'window.location.href=\'' +
-                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
-                                Apply
-                            </button>
+                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">Apply</button>
                         </div>
 
                         <div class="btnPad">
@@ -111,7 +111,8 @@
                             <div th:case="'true'">
                                 <div class="btnPad">
                                 <button type="button" class="btn btn-default"
-                                        th:onclick="'window.location.href=\'' + @{/user/myAdverts} + '\''">Cancel</button>
+                                        th:onclick="'window.location.href=\'' +
+                                        @{/user/myAdverts} + '\''">Cancel</button>
                                 </div>
                             </div>
 
@@ -119,9 +120,7 @@
                                 <div class="btnPad">
                                     <button type="button" class="btn btn-default"
                                             th:onclick="'window.location.href=\'' +
-                                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">
-                                        Apply
-                                    </button>
+                                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">Apply</button>
                                 </div>
 
                                 <div class="btnPad">
@@ -129,10 +128,9 @@
                                         th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
                                 </div>
                             </div>
-                            </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
 
             </div>
         </div>

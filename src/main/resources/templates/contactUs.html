@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 
 <head>
 
@@ -11,11 +12,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <!-- CUSTOM CONFIRM BUTTONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/panelBorder.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/grayFields.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainPage.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/popupsDIY.css}"/>
+
+    <script type="text/javascript" th:src="@{/js/popups.js}"></script>
 
     <style>
         p {
@@ -60,6 +67,7 @@
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control"
                                        th:value="${email} ? ${email}"/>
+
                                 <div class="errMsg" th:if="${emailError}">Field must not be empty</div>
                             </div>
                         </div>
@@ -83,6 +91,7 @@
                                 <label for="phone">Phone Number</label>
                                 <input type="number" name="phone" id="phone" class="form-control"
                                        th:value="${phone}">
+
                                 <div class="errMsg" th:if="${phoneError}">Field must not be empty</div>
                             </div>
                         </div>
@@ -94,7 +103,7 @@
 
                     <div class="btnPad">
                         <button type="button" class="btn btn-default"
-                                th:onclick="'window.history.back(-1);return false;'">Back</button>
+                                th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
                     </div>
                 </form>
             </div>
