@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <table class="table table-condensed">
+            <table class="table table-condensed" style="table-layout: fixed; word-wrap: break-word;">
                 <thead>
                     <tr>
                         <th>Job title & Company</th>
@@ -66,6 +66,7 @@
                         <th>Days Posted</th>
                     </tr>
                 </thead>
+
                 <tbody>
 
                 <div th:if="${advertArray.isEmpty()}">

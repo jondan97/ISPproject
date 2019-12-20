@@ -15,6 +15,14 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target=".collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
                     <a class="navbar-brand" th:href="@{/}">
                         <div class="logo" style="text-shadow: -0.2vh 0.2vh 0.2vh black;">
                             <div class="ath">ATH</div><div class="slash">/</div>TECH
@@ -22,46 +30,49 @@
                     </a>
                 </div>
 
-                <ul class="nav navbar-nav">
-                    <li><a th:href="@{/}">Home</a></li>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a th:href="@{/}">Home</a></li>
 
-                    <li><a th:href="@{/contactUs}">Contact Us</a></li>
-                </ul>
+                        <li><a th:href="@{/contactUs}">Contact Us</a></li>
+                    </ul>
 
-                <ul class="nav navbar-nav navbar-right" th:switch="${role}">
-                    <li th:case="'user'" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <div th:text="${companyName}" class="inBlock"></div>
-                            <span class="caret"></span>
-                        </a>
+                    <ul class="nav navbar-nav navbar-right" th:switch="${role}">
+                        <li th:case="'user'" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <div th:text="${companyName}" class="inBlock"></div>
+                                <span class="caret"></span>
+                            </a>
 
-                        <ul class="dropdown-menu">
-                            <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                            <li class="divider">&nbsp;</li>
-                            <li><a th:href="@{/user/passwordChange}">Change Password</a></li>
-                            <li><a onclick="log_out()" href="#">Logout</a></li>
-                        </ul>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                                <li class="divider">&nbsp;</li>
+                                <li><a th:href="@{/user/passwordChange}">Change Password</a></li>
+                                <li><a onclick="log_out()" href="#">Logout</a></li>
+                            </ul>
 
-                    </li>
+                        </li>
 
-                    <li th:case="'admin'" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <div th:text="Admin" class="inBlock"></div>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                            <li class="divider">&nbsp;</li>
-                            <li><a th:href="@{/admin}">Create User</a></li>
-                            <li><a onclick="log_out()" href="#">Logout</a></li>
-                        </ul>
+                        <li th:case="'admin'" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <div th:text="Admin" class="inBlock"></div>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
+                                <li class="divider">&nbsp;</li>
+                                <li><a th:href="@{/admin}">Create User</a></li>
+                                <li><a onclick="log_out()" href="#">Logout</a></li>
+                            </ul>
 
-                    </li>
+                        </li>
 
-                    <li th:case='*'>
-                        <a th:href="@{/login}">Login</a>
-                    </li>
-                </ul>
+                        <li th:case='*'>
+                            <a th:href="@{/login}">Login</a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </nav>
 
