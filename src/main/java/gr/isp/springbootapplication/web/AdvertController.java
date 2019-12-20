@@ -32,7 +32,7 @@ public class AdvertController {
     @GetMapping("/user/myAdverts")
     public String myAdverts(Model model) {
         SessionUserService.determineUser(model);
-        Iterable<Advert> adverts = advertRepository.findByUserId(SessionUserService.getSessionUser().getId());
+        Iterable<Advert> adverts = advertRepository.findByUserIdOrderByTimeCreatedDesc(SessionUserService.getSessionUser().getId());
         List<Advert> advertArrayVisible = new ArrayList<Advert>();
         List<Advert> advertArrayInvisible = new ArrayList<Advert>();
         List<Advert> advertArrayDraft = new ArrayList<Advert>();
@@ -168,7 +168,7 @@ public class AdvertController {
     public @ResponseBody
     Iterable<Advert> getAllUsers() {
         // This returns a JSON or XML with the users
-        return advertRepository.findByUserId(SessionUserService.getSessionUser().getId());
+        return advertRepository.findByUserIdOrderByTimeCreatedDesc(SessionUserService.getSessionUser().getId());
     }
 
     @PostMapping(path = "/user/editAdvert") // Map ONLY POST Requests

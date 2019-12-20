@@ -12,8 +12,6 @@ import java.util.Optional;
 @Repository
 public interface AdvertRepository extends CrudRepository<Advert, Long> {
     Advert findFirstById(Long Id);
-    Iterable<Advert> findByUserId(Long userId);
-    Iterable<Advert> findByStatus(String status);
-    Iterable<Advert> findByBody(String body);
-    Optional<Advert> findById(Long id);
+    Iterable<Advert> findByUserIdOrderByTimeCreatedDesc(Long userId);
+    Iterable<Advert> findByStatusOrderByTimeCreatedDesc(String status);
 }

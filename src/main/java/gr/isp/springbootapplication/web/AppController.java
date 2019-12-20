@@ -52,7 +52,7 @@ public class AppController {
     @GetMapping({"/"})
     public String mainPage(Model model) {
         SessionUserService.determineUser(model);
-        Iterable<Advert> adverts = advertRepository.findByStatus("Visible");
+        Iterable<Advert> adverts = advertRepository.findByStatusOrderByTimeCreatedDesc("Visible");
         List<Advert> advertArray = new ArrayList<Advert>();
         for (Advert ad: adverts) {
             Long daysPosted = (long) 0;
