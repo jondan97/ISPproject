@@ -46,6 +46,7 @@
 
     <div class="container">
         <div class="panel panel-default">
+
             <div class="row-fluid">
                 <div class="col">
                     <div class="input-group" style="width: 200px">
@@ -61,8 +62,8 @@
             <table class="table table-condensed" style="table-layout: fixed; word-wrap: break-word;">
                 <thead>
                     <tr>
-                        <th>Job title & Company</th>
-                        <th>Industry</th>
+                        <th>Job title & Industry</th>
+                        <th>Company</th>
                         <th>Days Posted</th>
                     </tr>
                 </thead>
@@ -79,13 +80,17 @@
                     <tr th:onclick="'window.location.href=\'' + @{'/view/' + ${advert.getId()}} + '\''">
                         <td class="line1" th:text="${advert.getTitle()}"></td>
 
-                        <td class="line2" th:text="${advert.getUser().getCompanyName()}"></td>
-
-                        <td th:text="${!advert.getIndustry().isEmpty()} ?
+                        <td class="line2" th:text="${!advert.getIndustry().isEmpty()} ?
                                 ${advert.getIndustry()} : 'No Industry'"></td>
+
+                        <td th:text="${advert.getUser().getCompanyName()}"></td>
 
                         <td th:text="${advert.getDaysPosted() != 0} ?
                                 ${advert.getDaysPosted()} + ' days' : 'Today'"></td>
+
+                        <!-- hidden cells to allow searching in other areas-->
+                        <td style="display:none;" th:text="${advert.getBody()}"></td>
+                        <td style="display:none;" th:text="${advert.getSalary()}"></td>
                     </tr>
                 </div>
                 </tbody>
