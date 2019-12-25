@@ -9,10 +9,10 @@
 
     <div th:fragment="navbar">
 
-        <style>.inBlock { display: inline-block; }</style>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/navigation.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/athtechLogo.css}"/>
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -35,6 +35,8 @@
                         <li><a th:href="@{/}">Home</a></li>
 
                         <li><a th:href="@{/contactUs}">Contact Us</a></li>
+
+                        <li class="divider3">&nbsp;</li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right" th:switch="${role}">
@@ -46,7 +48,7 @@
 
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                                <li class="divider">&nbsp;</li>
+                                <li class="divider2">&nbsp;</li>
                                 <li><a th:href="@{/user/passwordChange}">Change Password</a></li>
                                 <li><a onclick="log_out()" href="#">Logout</a></li>
                             </ul>
@@ -60,7 +62,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/user/myAdverts}">My Adverts</a></li>
-                                <li class="divider">&nbsp;</li>
+                                <div class="padDivider"><li class="divider2">&nbsp;</li></div>
                                 <li><a th:href="@{/admin}">Create User</a></li>
                                 <li><a onclick="log_out()" href="#">Logout</a></li>
                             </ul>

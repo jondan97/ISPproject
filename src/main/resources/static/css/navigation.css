@@ -1,0 +1,25 @@
+.inBlock { display: inline-block; }
+
+.navbar-default {
+    background-color: #e8e8e8;
+    border-color: #e8e8e8;
+}
+
+.navbar-default .navbar-toggle { border-color: gray; }
+
+a { font-weight: bold; }
+
+.divider2 {
+    background-color: lightgray;
+    height: 1px;
+    margin: 10px 10px 5px 10px;
+}
+
+@media (max-width: 767px) {
+    .divider3 {
+        background-color: lightgray;
+        height: 1px;
+        overflow: hidden;
+        margin: 5px 10px auto 10px;
+    }
+}
