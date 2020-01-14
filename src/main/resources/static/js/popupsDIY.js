@@ -6,7 +6,10 @@ function custAlert(text) {
     /* animation function */
     $('.notifier').html(text);
     $('.notifierBox').fadeIn();
-    var id = setInterval(frame, 50);
+
+    if (!id)
+        var id = setInterval(frame, 50);
+
     function frame() {
         if (topVar === 0.8 || topVar > 0.8) {
             clearInterval(id);

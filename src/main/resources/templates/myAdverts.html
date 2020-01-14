@@ -39,11 +39,11 @@
 
 <body>
 
-    <div th:insert="/navigation :: navbar"></div>
+    <div th:insert="/navigation :: navbar" class="showDIYAlerts"></div>
 
     <h1>My Adverts</h1>
 
-    <!-- DIY ALERT SECTION-->
+    <!-- DIY ALERT SECTION -->
     <div class="notifierBox" style="background-color: #f44336">
         <div class="notifier"></div>
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -66,9 +66,35 @@
 
         <script th:case="${advertProblem}">adProblem();</script>
     </div>
-    <!-- DIY ALERT SECTION -->
+     <!-- DIY ALERT SECTION -->
 
     <div class="container">
+
+        <!-- DIY ALERT SECTION
+        <div class="notifierBox" style="background-color: #f44336">
+            <div class="notifier"></div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+
+        <div th:switch="${notificationMessage}">
+            <div th:case="null"></div>
+
+            <script th:case="${advertPosted}">adPosted();</script>
+
+            <script th:case="${advertDrafted}">adDrafted();</script>
+
+            <script th:case="${advertEdited}">adEdited();</script>
+
+            <script th:case="${advertDeleted}">
+                $(document).ready(custAlert("Advert deleted"));
+            </script>
+
+            <script th:case="${passwordChanged}">passChange();</script>
+
+            <script th:case="${advertProblem}">adProblem();</script>
+        </div>
+        DIY ALERT SECTION -->
+
         <div class="panel panel-default">
 
             <div class="row-fluid">

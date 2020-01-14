@@ -23,3 +23,7 @@ a { font-weight: bold; }
         margin: 5px 10px auto 10px;
     }
 }
+
+/* at 100% opacity, "popupsDIY" would not show (no idea why)
+   at 99% opacity, it is, if not at all, barely noticeable and allows the alerts to show */
+.showDIYAlerts { opacity: 99% }
