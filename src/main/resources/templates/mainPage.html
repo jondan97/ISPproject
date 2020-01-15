@@ -24,6 +24,7 @@
     <script type="text/javascript" th:src="@{/js/searching.js}"></script>
     <script type="text/javascript" th:src="@{/js/popups.js}"></script>
     <script type="text/javascript" th:src="@{/js/popupsDIY.js}"></script>
+    <script type="text/javascript" th:src="@{/js/paginator.js}"></script>
 
 </head>
 
@@ -59,7 +60,9 @@
                 </div>
             </div>
 
-            <table class="table table-condensed" style="table-layout: fixed; word-wrap: break-word;">
+            <div id="pages" style="padding: 1px 10px 10px 10px"></div>
+
+            <table id="mainTable" class="table table-condensed" style="table-layout: fixed; word-wrap: break-word;">
                 <thead>
                     <tr>
                         <th>Job title & Industry</th>
@@ -69,7 +72,6 @@
                 </thead>
 
                 <tbody>
-
                 <div th:if="${advertArray.isEmpty()}">
                     <tr>
                         <td colspan="4">No adverts to display</td>
@@ -98,6 +100,13 @@
 
         </div>
     </div>
+
+    <script>
+        paginator({
+            table: document.getElementById("mainTable"),
+            box: document.getElementById("pages")
+        });
+    </script>
 
 </body>
 
