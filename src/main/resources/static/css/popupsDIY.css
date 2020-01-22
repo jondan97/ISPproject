@@ -8,6 +8,8 @@
     left: 50%;
     transform: translateX(-50%);
 
+    transition: all 100ms linear;
+
     position: absolute;
     display: none;
     border-radius: 5px;

@@ -195,9 +195,12 @@ function paginator(config) {
                 }, false);
                 if (disabled) {
                     button.disabled = true;
+
+                    //stops from repeatedly adding "active" class
+                    button.classList.remove(config.active_class);
                 }
                 if (active) {
-                    button.className += config.active_class; //change from "=" to "+="
+                    button.classList.add(config.active_class); //change from "=" to classList.add
                 }
                 return button;
             }
