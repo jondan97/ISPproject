@@ -88,7 +88,7 @@
                         <td th:text="${advert.getUser().getCompanyName()}"></td>
 
                         <td th:text="${advert.getDaysPosted() != 0} ?
-                                ${advert.getDaysPosted()} + ' days' : 'Today'"></td>
+                                ${advert.getDaysPosted()} + ' days' : 'Posted Today'"></td>
 
                         <!-- hidden cells to allow searching in other areas-->
                         <td style="display:none;" th:text="${advert.getBody()}"></td>

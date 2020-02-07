@@ -142,7 +142,7 @@
                             <td class="line2" th:text="${adVis.getIndustry()}"></td>
 
                             <td class="alignment" th:text="${adVis.getDaysPosted() != 0} ?
-                                             ${adVis.getDaysPosted()} + ' days' : 'Today'"></td>
+                                             ${adVis.getDaysPosted()} + ' days' : 'Posted Today'"></td>
 
                             <form th:action="@{/user/editAdvert}" method="post">
                                 <button hidden type="submit" name="action" value="Update"

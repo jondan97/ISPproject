@@ -12,7 +12,9 @@ $(document).ready(function() {
 
         $rows.show();
 
-        var searchFor = $(this).val().trim().split(/\s+/).map(function (text) { return new RegExp(text, "i"); });
+        var searchFor = $(this).val().trim().split(/\s+/).map(function (text) {
+            return new RegExp(text, "i");
+        });
 
         if (searchFor.length) {
             if (searchFor) $rows.filter(function () {
@@ -28,10 +30,10 @@ $(document).ready(function() {
         console.log('done searching');
 
         if ($rows.find(':visible').length === 0) {
-            var string = document.getElementById("tableInfo").innerHTML;
+            var string = document.querySelectorAll("#tableInfo").innerHTML;
             var replacement = string.replace("Click on a row to view an advert!", "No results");
-            document.getElementById("tableInfo").innerHTML = replacement;
+            document.querySelectorAll("#tableInfo").innerHTML = replacement;
         } else
-            document.getElementById("tableInfo").innerHTML = "Click on a row to view an advert!";
+            document.querySelectorAll("#tableInfo").innerHTML = "Click on a row to view an advert!";
     });
 });

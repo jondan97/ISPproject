@@ -97,12 +97,6 @@
                     <div th:case="null">
                         <div class="btnPad">
                             <button type="button" class="btn btn-default"
-                                    th:onclick="'window.location.href=\'' +
-                                    @{'/view/' + ${advert.getId()} + '/apply'} + '\''">Apply</button>
-                        </div>
-
-                        <div class="btnPad">
-                            <button type="button" class="btn btn-default"
                                     th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
                         </div>
                     </div>
@@ -117,12 +111,6 @@
                             </div>
 
                             <div th:case="*">
-                                <div class="btnPad">
-                                    <button type="button" class="btn btn-default"
-                                            th:onclick="'window.location.href=\'' +
-                                            @{'/view/' + ${advert.getId()} + '/apply'} + '\''">Apply</button>
-                                </div>
-
                                 <div class="btnPad">
                                     <button type="button" class="btn btn-default"
                                         th:onclick="'window.location.href=\'' + @{/} + '\''">Cancel</button>
