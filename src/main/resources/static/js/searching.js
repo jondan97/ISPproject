@@ -30,10 +30,10 @@ $(document).ready(function() {
         console.log('done searching');
 
         if ($rows.find(':visible').length === 0) {
-            var string = document.querySelectorAll("#tableInfo").innerHTML;
+            var string = document.getElementById("tableInfo").innerHTML;
             var replacement = string.replace("Click on a row to view an advert!", "No results");
-            document.querySelectorAll("#tableInfo").innerHTML = replacement;
+            document.getElementById("tableInfo").innerHTML = replacement;
         } else
-            document.querySelectorAll("#tableInfo").innerHTML = "Click on a row to view an advert!";
+            document.getElementById("tableInfo").innerHTML = "Click on a row to view an advert!";
     });
 });
