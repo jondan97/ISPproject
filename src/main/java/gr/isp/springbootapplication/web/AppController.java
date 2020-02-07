@@ -271,12 +271,19 @@ public class AppController {
                                ) throws IOException, MessagingException {
 
         if (!(email.isEmpty() || uCompanyName.isEmpty() || phone.isEmpty())) {
+            //email sent to admin
             String emailSentTo = "jondan97@gmail.com";
             String emailSubject = "Credentials Request";
             String emailBody = "Request for credentials by a new user has been received!" +
                     "<h1> Contact E-mail: " + email + "</h1>" +
                     "<h1> Company Name: " + uCompanyName + "</h1>" +
                     "<h1> Phone Number: " + phone + "</h1>";
+            emailService.sendEmail(emailSentTo, emailSubject, emailBody);
+            //email sent to user contacting
+            emailSentTo = email;
+            emailSubject = "Contact Request";
+            emailBody = "You have successfully contacted us!<br>" +
+                    "You will be notified by one of our representatives!";
             emailService.sendEmail(emailSentTo, emailSubject, emailBody);
             redir.addFlashAttribute("userContacted", true);
             return "redirect:/";
