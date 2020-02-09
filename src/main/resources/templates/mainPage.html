@@ -29,7 +29,9 @@
 
 <body>
 
-    <div th:insert="/navigation :: navbar" class="showDIYAlerts"></div>
+    <div th:insert="navigation :: navbar" style="z-index: 2"></div>
+
+    <div class="showDIYAlerts"></div>
 
     <h1>Welcome to <div class="logo"><div class="ath">ATH</div><div class="slash">/</div>TECH</div> career page</h1>
 
@@ -46,12 +48,15 @@
 
     <div class="container">
         <div class="panel panel-default">
+            <!--<div class="input-group" id="searchCont" style="width: 200px">
+                <input type="text" id="search" placeholder="Search" class="form-control">
+            </div>-->
 
             <div class="row-fluid">
                 <div class="col">
-                    <!--<div class="input-group" id="searchCont" style="width: 200px">
+                    <div class="input-group" id="searchCont" style="width: 200px">
                         <input type="text" id="search" placeholder="Search" class="form-control">
-                    </div>-->
+                    </div>
                 </div>
 
                 <div class="col">

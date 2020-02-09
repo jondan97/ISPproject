@@ -20,13 +20,13 @@ h1 {
     padding-top: 1px;
 }
 
-/*#searchCont {
+.input-group {
     float: right;
     padding-right: 12px;
     padding-top: 10px;
     padding-bottom: 10px;
     min-width: 100px;
-}*/
+}
 
 #tableInfo {
     padding-left: 12px;
