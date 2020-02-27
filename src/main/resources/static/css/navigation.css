@@ -26,4 +26,7 @@ a { font-weight: bold; }
 
 /* at 100% opacity, "popupsDIY" would not show (no idea why)
    at 99% opacity, it is, if not at all, barely noticeable and allows the alerts to show */
-.showDIYAlerts { opacity: 99% }
+.navBugFixes {
+    z-index: 2;
+    opacity: 99%;
+}
